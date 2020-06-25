@@ -1,24 +1,44 @@
 {
-  "name": "iconator",
-  "version": "0.0.1",
-  "description": "Generate Favicons and other icons",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "npm run test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/silvandiepen/iconator.git"
-  },
-  "keywords": [
-    "icon",
-    "favicon",
-    "generate"
-  ],
-  "author": "Sil van Diepen",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/silvandiepen/iconator/issues"
-  },
-  "homepage": "https://github.com/silvandiepen/iconator#readme"
+	"name": "iconator",
+	"version": "0.0.1",
+	"description": "Generate Favicons and other icons",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "tsc",
+		"build:icons": "npm run build && node dist/index.js --input=test/test.png",
+		"test": "npm run test",
+		"precommit": "npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/silvandiepen/iconator.git"
+	},
+	"keywords": [
+		"icon",
+		"favicon",
+		"generate"
+	],
+	"author": "Sil van Diepen",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/silvandiepen/iconator/issues"
+	},
+	"homepage": "https://github.com/silvandiepen/iconator#readme",
+	"devDependencies": {
+		"@babel/core": "^7.8.4",
+		"@babel/preset-env": "^7.8.4",
+		"@babel/register": "^7.8.3",
+		"@types/sharp": "^0.25.0",
+		"git-pre-commit": "^2.1.4",
+		"jest": "^26.1.0",
+		"ts-jest": "^26.1.1",
+		"ts-lint": "^4.5.1",
+		"typescript": "^3.9.5"
+	},
+	"dependencies": {
+		"cli-block": "^1.1.7",
+		"png-to-ico": "^2.1.0",
+		"sharp": "^0.25.4",
+		"yargs": "^15.3.1"
+	}
 }

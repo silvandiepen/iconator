@@ -1,0 +1,90 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.settings = exports.defaultSettings = void 0;
+const yargs_1 = __importDefault(require("yargs"));
+exports.defaultSettings = {
+    input: "assets/favicon.png",
+    output: "img/favicons",
+    debug: false,
+    color: "white",
+    themeColor: "white",
+    appleStatusBarStyle: "default",
+    appName: "",
+    appDeveloper: "",
+    appDeveloperUrl: "",
+    appDescription: "",
+};
+exports.settings = () => {
+    const cs = yargs_1.default.options({
+        input: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.input,
+            alias: "i",
+        },
+        output: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.output,
+            alias: "o",
+        },
+        color: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.color,
+            alias: "o",
+        },
+        themeColor: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.themeColor,
+            alias: "o",
+        },
+        appleStatusBarStyle: {
+            require: false,
+            type: "string",
+            default: exports.defaultSettings.appleStatusBarStyle,
+        },
+        debug: {
+            required: false,
+            type: "boolean",
+            default: exports.defaultSettings.debug,
+        },
+        appName: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.appName,
+        },
+        appDeveloper: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.appDeveloper,
+        },
+        appDeveloperUrl: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.appDeveloperUrl,
+        },
+        appDescription: {
+            required: false,
+            type: "string",
+            default: exports.defaultSettings.appDescription,
+        },
+    }).argv;
+    return {
+        input: cs.input,
+        output: cs.output,
+        debug: cs.debug,
+        color: cs.color,
+        themeColor: cs.themeColor,
+        appleStatusBarStyle: cs.appleStatusBarStyle,
+        appName: cs.appName,
+        appDeveloper: cs.appName,
+        appDeveloperUrl: cs.appName,
+        appDescription: cs.appName,
+    };
+};
+//# sourceMappingURL=settings.js.map
