@@ -3,9 +3,10 @@
 	"version": "0.0.1",
 	"description": "Generate Favicons and other icons",
 	"main": "dist/index.js",
+	"bin": "dist/cli.js",
 	"scripts": {
 		"build": "tsc",
-		"build:icons": "npm run build && node dist/index.js --input=test/test.png",
+		"build:icons": "npm run build && node dist/cli.js --input=test/test.png",
 		"test": "npm run test",
 		"precommit": "npm run build"
 	},
