@@ -1,0 +1,24 @@
+{
+  "name": "iconator",
+  "version": "0.0.1",
+  "description": "Generate Favicons and other icons",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/silvandiepen/iconator.git"
+  },
+  "keywords": [
+    "icon",
+    "favicon",
+    "generate"
+  ],
+  "author": "Sil van Diepen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silvandiepen/iconator/issues"
+  },
+  "homepage": "https://github.com/silvandiepen/iconator#readme"
+}
