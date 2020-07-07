@@ -45,7 +45,22 @@ const doIconator = async (settings: ISettings): Promise<IOutput> => {
 		.then(buildHtml)
 		.then((s) => {
 			!settings.silent && log.BLOCK_END("done!");
-			return { settings: s, icons: s.icons, html: s.html };
+			return {
+				settings: {
+					input: s.input,
+					output: s.output,
+					destination: s.destination,
+					color: s.color,
+					themeColor: s.themeColor,
+					appleStatusBarStyle: s.appleStatusBarStyle,
+					appName: s.appName,
+					appDeveloper: s.appDeveloper,
+					appDeveloperUrl: s.appDeveloperUrl,
+					appDescription: s.appDescription,
+				},
+				icons: s.icons,
+				html: s.html,
+			};
 		});
 	return iconData;
 };

@@ -1,5 +1,5 @@
 import { IIcon } from "./config";
-export interface ISettings {
+interface IOutputSettings {
     input?: string;
     output?: string;
     destination?: string;
@@ -10,6 +10,8 @@ export interface ISettings {
     appDeveloper?: string;
     appDeveloperUrl?: string;
     appDescription?: string;
+}
+export interface ISettings extends IOutputSettings {
     package?: any;
     debug?: boolean;
     icons?: IIcon[];
@@ -21,3 +23,4 @@ export interface IOutput {
     html: string[];
     settings: ISettings;
 }
+export {};
