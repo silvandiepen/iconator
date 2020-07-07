@@ -52,6 +52,7 @@ const doIconator = async (settings: ISettings): Promise<ISettings> => {
 
 const buildIconator = async (config: ISettings = settings()) => {
 	const mergedSettings = Object.assign(settings(), config);
-	await doIconator(mergedSettings);
+	const result = await doIconator(mergedSettings);
+	return result;
 };
 export default buildIconator;

@@ -71,7 +71,8 @@ const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () 
 });
 const buildIconator = (config = settings_1.settings()) => __awaiter(void 0, void 0, void 0, function* () {
     const mergedSettings = Object.assign(settings_1.settings(), config);
-    yield doIconator(mergedSettings);
+    const result = yield doIconator(mergedSettings);
+    return result;
 });
 exports.default = buildIconator;
 //# sourceMappingURL=index.js.map
