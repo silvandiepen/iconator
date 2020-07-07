@@ -7,13 +7,13 @@ import * as log from "cli-block";
 import { settings, defaultSettings } from "./settings";
 import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
-import { ISettings } from "./types";
+import { ISettings, IOutput } from "./types";
 
 const buildIt = async (settings: ISettings): Promise<ISettings> => {
 	return settings;
 };
-const doIconator = async (settings: ISettings): Promise<ISettings> => {
-	const icons = await buildIt(settings)
+const doIconator = async (settings: ISettings): Promise<IOutput> => {
+	const iconData = await buildIt(settings)
 		.then(getPackage)
 		.then((s) => {
 			!settings.silent && log.START("Iconator");
@@ -45,9 +45,9 @@ const doIconator = async (settings: ISettings): Promise<ISettings> => {
 		.then(buildHtml)
 		.then((s) => {
 			!settings.silent && log.BLOCK_END("done!");
-			return { ...s, html: s.html };
+			return { settings: s, icons: s.icons, html: s.html };
 		});
-	return icons;
+	return iconData;
 };
 
 const buildIconator = async (config: ISettings = settings()) => {

@@ -39,7 +39,7 @@ const buildIt = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     return settings;
 });
 const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    const icons = yield buildIt(settings)
+    const iconData = yield buildIt(settings)
         .then(aggregate_1.getPackage)
         .then((s) => {
         !settings.silent && log.START("Iconator");
@@ -65,9 +65,9 @@ const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () 
         .then(generate_1.buildHtml)
         .then((s) => {
         !settings.silent && log.BLOCK_END("done!");
-        return Object.assign(Object.assign({}, s), { html: s.html });
+        return { settings: s, icons: s.icons, html: s.html };
     });
-    return icons;
+    return iconData;
 });
 const buildIconator = (config = settings_1.settings()) => __awaiter(void 0, void 0, void 0, function* () {
     const mergedSettings = Object.assign(settings_1.settings(), config);
