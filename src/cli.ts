@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { doIconator } from "./";
-import { settings } from "./settings";
+import Iconator from "./";
 
-doIconator(settings());
+Iconator();

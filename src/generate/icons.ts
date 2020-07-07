@@ -14,7 +14,10 @@ export const createFolder = async (folder): Promise<void> => {
 	});
 };
 
-const buildIcon = async (icon: IIcon, settings: ISettings): Promise<void> => {
+export const buildIcon = async (
+	icon: IIcon,
+	settings: ISettings
+): Promise<void> => {
 	await sharp(settings.input)
 		.rotate(icon.rotate ? icon.rotate : 0)
 		.resize(icon.width, icon.height)
@@ -38,17 +41,17 @@ const buildIcon = async (icon: IIcon, settings: ISettings): Promise<void> => {
 };
 
 export const buildIcons = async (settings: ISettings): Promise<ISettings> => {
-	log.BLOCK_MID("Generate Icons");
+	!settings.silent && log.BLOCK_MID("Generate Icons");
 
 	const allIcons = [];
 
 	await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-		log.BLOCK_LINE();
-		log.BLOCK_LINE(groupName.toUpperCase());
+		!settings.silent && log.BLOCK_LINE();
+		!settings.silent && log.BLOCK_LINE(groupName.toUpperCase());
 		await asyncForEach(iconGroups[groupName], async (icon: IIcon) => {
 			allIcons.push(icon);
 			await buildIcon(icon, settings).then(() => {
-				log.BLOCK_LINE_SUCCESS(icon.name);
+				!settings.silent && log.BLOCK_LINE_SUCCESS(icon.name);
 			});
 		});
 	});

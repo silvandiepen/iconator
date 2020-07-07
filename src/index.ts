@@ -4,27 +4,28 @@
 import * as log from "cli-block";
 
 // Functionality
-import { defaultSettings } from "./settings";
+import { settings, defaultSettings } from "./settings";
 import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
 import { ISettings } from "./types";
 
-const buildIconator = async (settings: ISettings): Promise<ISettings> => {
+const buildIt = async (settings: ISettings): Promise<ISettings> => {
 	return settings;
 };
-export const doIconator = async (settings: ISettings): Promise<ISettings> => {
-	const icons = await buildIconator(settings)
+const doIconator = async (settings: ISettings): Promise<ISettings> => {
+	const icons = await buildIt(settings)
 		.then(getPackage)
 		.then((s) => {
-			log.START("Iconator");
-			log.BLOCK_START();
-			log.BLOCK_LINE(
-				`Iconator (${s.package.version}) is generating your icons.`
-			);
+			!settings.silent && log.START("Iconator");
+			!settings.silent && log.BLOCK_START();
+			!settings.silent &&
+				log.BLOCK_LINE(
+					`Iconator (${s.package.version}) is generating your icons.`
+				);
 			return s;
 		})
 		.then(async (s) => {
-			log.BLOCK_MID("Settings");
+			!settings.silent && log.BLOCK_MID("Settings");
 
 			const filteredSettings = {};
 			Object.keys(s).forEach((key) =>
@@ -33,24 +34,24 @@ export const doIconator = async (settings: ISettings): Promise<ISettings> => {
 					: false
 			);
 
-			await log.BLOCK_SETTINGS(s.debug ? s : filteredSettings, {
-				exclude: ["package"],
-			});
+			!settings.silent &&
+				(await log.BLOCK_SETTINGS(s.debug ? s : filteredSettings, {
+					exclude: ["package"],
+				}));
 			return s;
 		})
 		.then(buildIcons)
 		.then(buildMetaFiles)
 		.then(buildHtml)
 		.then((s) => {
-			log.BLOCK_END("done!");
+			!settings.silent && log.BLOCK_END("done!");
 			return { ...s, html: s.html };
 		});
 	return icons;
 };
 
-const buildTheIcons = async (config: ISettings = defaultSettings) => {
-	const mergedSettings = Object.assign(defaultSettings, config);
+const buildIconator = async (config: ISettings = settings()) => {
+	const mergedSettings = Object.assign(settings(), config);
 	await doIconator(mergedSettings);
 };
-
-export default buildTheIcons;
+export default buildIconator;

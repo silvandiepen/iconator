@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildIcons = exports.createFolder = void 0;
+exports.buildIcons = exports.buildIcon = exports.createFolder = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
 const log = __importStar(require("cli-block"));
 const utils_1 = require("../utils");
@@ -44,7 +44,7 @@ exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* (
         return;
     });
 });
-const buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
+exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
     yield sharp_1.default(settings.input)
         .rotate(icon.rotate ? icon.rotate : 0)
         .resize(icon.width, icon.height)
@@ -65,15 +65,15 @@ const buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function
     });
 });
 exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    log.BLOCK_MID("Generate Icons");
+    !settings.silent && log.BLOCK_MID("Generate Icons");
     const allIcons = [];
     yield utils_1.asyncForEach(Object.keys(icons_json_1.default), (groupName) => __awaiter(void 0, void 0, void 0, function* () {
-        log.BLOCK_LINE();
-        log.BLOCK_LINE(groupName.toUpperCase());
+        !settings.silent && log.BLOCK_LINE();
+        !settings.silent && log.BLOCK_LINE(groupName.toUpperCase());
         yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
             allIcons.push(icon);
-            yield buildIcon(icon, settings).then(() => {
-                log.BLOCK_LINE_SUCCESS(icon.name);
+            yield exports.buildIcon(icon, settings).then(() => {
+                !settings.silent && log.BLOCK_LINE_SUCCESS(icon.name);
             });
         }));
     }));

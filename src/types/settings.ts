@@ -14,4 +14,5 @@ export interface ISettings {
 	appDeveloper: string;
 	appDeveloperUrl: string;
 	appDescription: string;
+	silent?: boolean;
 }
