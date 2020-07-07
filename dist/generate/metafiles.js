@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,9 +36,13 @@ const files_json_1 = __importDefault(require("../files.json"));
 const cli_block_1 = require("cli-block");
 const path_1 = require("path");
 const _1 = require("./");
+const xml_js_1 = require("xml-js");
+const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
 exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    Object.keys(files_json_1.default).forEach((category) => __awaiter(void 0, void 0, void 0, function* () {
+    log.BLOCK_LINE();
+    log.BLOCK_LINE("META FILES");
+    yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
             const filedata = JSON.stringify(files_json_1.default[category][file])
                 .replace(/{{color}}/g, settings.color)
@@ -32,7 +55,11 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
                 ? path_1.join(settings.destination, file)
                 : path_1.join(settings.output, file);
             yield _1.createFolder(path_1.dirname(filePath));
-            yield writeFile(filePath, filedata);
+            yield writeFile(filePath, filePath.includes(".xml")
+                ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
+                : filedata).then(() => {
+                log.BLOCK_LINE_SUCCESS(file);
+            });
         }));
     }));
     return settings;
