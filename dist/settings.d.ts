@@ -2,6 +2,7 @@ import { ISettings } from "./types";
 export declare const defaultSettings: {
     input: string;
     output: string;
+    destination: string;
     debug: boolean;
     color: string;
     themeColor: string;

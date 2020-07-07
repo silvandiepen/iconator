@@ -28,7 +28,9 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
                 .replace(/{{appDescription}}/g, settings.appDescription)
                 .replace(/{{appDeveloper}}/g, settings.appDeveloper)
                 .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-            const filePath = path_1.join(settings.output, file);
+            const filePath = settings.destination
+                ? path_1.join(settings.destination, file)
+                : path_1.join(settings.output, file);
             yield _1.createFolder(path_1.dirname(filePath));
             yield writeFile(filePath, filedata);
         }));

@@ -4,6 +4,7 @@ import { ISettings } from "./types";
 export const defaultSettings = {
 	input: "assets/favicon.png",
 	output: "img/favicons",
+	destination: "img/favicons",
 	debug: false,
 	color: "white",
 	themeColor: "white",
@@ -27,6 +28,12 @@ export const settings = (): ISettings => {
 			type: "string",
 			default: defaultSettings.output,
 			alias: "o",
+		},
+		destination: {
+			required: false,
+			type: "string",
+			default: defaultSettings.destination,
+			alias: "d",
 		},
 		color: {
 			required: false,
@@ -75,6 +82,7 @@ export const settings = (): ISettings => {
 	return {
 		input: cs.input,
 		output: cs.output,
+		destination: cs.destination,
 		debug: cs.debug,
 		color: cs.color,
 		themeColor: cs.themeColor,

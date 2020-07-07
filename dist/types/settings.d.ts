@@ -2,6 +2,7 @@ import { IIcon } from "./config";
 export interface ISettings {
     input?: string;
     output?: string;
+    destination?: string;
     color?: string;
     themeColor?: string;
     appleStatusBarStyle?: string;
