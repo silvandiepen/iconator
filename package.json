@@ -29,22 +29,20 @@
 	},
 	"homepage": "https://github.com/silvandiepen/iconator#readme",
 	"devDependencies": {
-		"@babel/core": "^7.8.4",
-		"@babel/preset-env": "^7.8.4",
-		"@babel/register": "^7.8.3",
-		"@types/jest": "^26.0.3",
+		"@babel/core": "^7.10.4",
+		"@babel/preset-env": "^7.10.4",
+		"@babel/register": "^7.10.4",
+		"@types/jest": "^26.0.4",
 		"@types/sharp": "^0.25.0",
 		"git-pre-commit": "^2.1.4",
 		"jest": "^26.1.0",
 		"ts-jest": "^26.1.1",
 		"ts-lint": "^4.5.1",
-		"typescript": "^3.9.5"
-	},
-	"dependencies": {
+		"typescript": "^3.9.6",
 		"cli-block": "^1.1.7",
 		"png-to-ico": "^2.1.0",
 		"sharp": "^0.25.4",
 		"xml-js": "^1.6.11",
-		"yargs": "^15.3.1"
+		"yargs": "^15.4.0"
 	}
 }
