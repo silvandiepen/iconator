@@ -68,13 +68,20 @@ exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* (
     !settings.logging.includes("silent") && log.BLOCK_MID("Generate Icons");
     const allIcons = [];
     yield utils_1.asyncForEach(Object.keys(icons_json_1.default), (groupName) => __awaiter(void 0, void 0, void 0, function* () {
-        !settings.logging.includes("silent") && log.BLOCK_LINE();
-        !settings.logging.includes("silent") &&
+        if (!settings.logging.includes("silent") &&
+            !settings.logging.includes("minimal")) {
+            log.BLOCK_LINE();
             log.BLOCK_LINE(groupName.toUpperCase());
+        }
+        else if (!settings.logging.includes("silent") &&
+            settings.logging.includes("minimal")) {
+            log.BLOCK_LINE_SUCCESS(groupName);
+        }
         yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
             allIcons.push(icon);
             yield exports.buildIcon(icon, settings).then(() => {
                 !settings.logging.includes("silent") &&
+                    !settings.logging.includes("minimal") &&
                     log.BLOCK_LINE_SUCCESS(icon.name);
             });
         }));

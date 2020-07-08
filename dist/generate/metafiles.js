@@ -40,8 +40,14 @@ const xml_js_1 = require("xml-js");
 const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
 exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    log.BLOCK_LINE();
-    log.BLOCK_LINE("META FILES");
+    if (!settings.logging.includes("silent") &&
+        !settings.logging.includes("minimal")) {
+        log.BLOCK_LINE();
+        log.BLOCK_LINE("Meta files".toUpperCase());
+    }
+    else if (!settings.logging.includes("silent")) {
+        log.BLOCK_LINE_SUCCESS("Meta files");
+    }
     yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
             const filedata = JSON.stringify(files_json_1.default[category][file])
@@ -58,7 +64,9 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
             yield writeFile(filePath, filePath.includes(".xml")
                 ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
                 : filedata).then(() => {
-                !settings.logging.includes("silent") && log.BLOCK_LINE_SUCCESS(file);
+                !settings.logging.includes("silent") &&
+                    !settings.logging.includes("minimal") &&
+                    log.BLOCK_LINE_SUCCESS(file);
             });
         }));
     }));

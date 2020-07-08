@@ -41,12 +41,11 @@ Iconator({
 | appDescription      | `NULL`               | App description used in meta tags.                                                                                     |
 | logging             | `[]`                 | Logging can be slightly altered, you can give no options for default and `silent`,`inline` and debug.                  |
 
-
 ### Logging
 
-Logging can be slightly altered, you can give no options for default and `silent`,`inline` or debug.
+Logging can be slightly altered, you can give no options for default and `silent`,`inline`, `minimal` or `debug`.
 
-By default the logging will be complete, this shows all information. 
+By default the logging will be complete, this shows all information.
 
 **debug**
 Debug will show some more extra information.
@@ -56,3 +55,6 @@ Will make sure there is no logging output from Iconator
 
 **inline**
 The loggin has opening and closing elements. these will be hidden when using inline. This option is especially for use in other generators which already provide logging.
+
+**Minimal**
+A minimal way of showing the logs. Without all files, just the headlines.

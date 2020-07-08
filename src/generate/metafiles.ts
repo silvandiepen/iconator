@@ -11,8 +11,15 @@ const { writeFile } = require("fs").promises;
 export const buildMetaFiles = async (
 	settings: ISettings
 ): Promise<ISettings> => {
-	log.BLOCK_LINE();
-	log.BLOCK_LINE("META FILES");
+	if (
+		!settings.logging.includes("silent") &&
+		!settings.logging.includes("minimal")
+	) {
+		log.BLOCK_LINE();
+		log.BLOCK_LINE("Meta files".toUpperCase());
+	} else if (!settings.logging.includes("silent")) {
+		log.BLOCK_LINE_SUCCESS("Meta files");
+	}
 	await asyncForEach(Object.keys(fileData), async (category) => {
 		await asyncForEach(Object.keys(fileData[category]), async (file) => {
 			const filedata = JSON.stringify(fileData[category][file])
@@ -33,7 +40,9 @@ export const buildMetaFiles = async (
 					? js2xml(fileData, { compact: true, spaces: 4 })
 					: filedata
 			).then(() => {
-				!settings.logging.includes("silent") && log.BLOCK_LINE_SUCCESS(file);
+				!settings.logging.includes("silent") &&
+					!settings.logging.includes("minimal") &&
+					log.BLOCK_LINE_SUCCESS(file);
 			});
 		});
 	});

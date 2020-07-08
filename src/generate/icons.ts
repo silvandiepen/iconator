@@ -46,13 +46,24 @@ export const buildIcons = async (settings: ISettings): Promise<ISettings> => {
 	const allIcons = [];
 
 	await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-		!settings.logging.includes("silent") && log.BLOCK_LINE();
-		!settings.logging.includes("silent") &&
+		if (
+			!settings.logging.includes("silent") &&
+			!settings.logging.includes("minimal")
+		) {
+			log.BLOCK_LINE();
 			log.BLOCK_LINE(groupName.toUpperCase());
+		} else if (
+			!settings.logging.includes("silent") &&
+			settings.logging.includes("minimal")
+		) {
+			log.BLOCK_LINE_SUCCESS(groupName);
+		}
+
 		await asyncForEach(iconGroups[groupName], async (icon: IIcon) => {
 			allIcons.push(icon);
 			await buildIcon(icon, settings).then(() => {
 				!settings.logging.includes("silent") &&
+					!settings.logging.includes("minimal") &&
 					log.BLOCK_LINE_SUCCESS(icon.name);
 			});
 		});
