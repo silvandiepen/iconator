@@ -29,9 +29,8 @@ export const buildMetaFiles = async (
 				.replace(/{{appDescription}}/g, settings.appDescription)
 				.replace(/{{appDeveloper}}/g, settings.appDeveloper)
 				.replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-			const filePath = settings.destination
-				? join(settings.destination, file)
-				: join(settings.output, file);
+
+			const filePath = join(settings.output, file);
 			await createFolder(dirname(filePath));
 
 			await writeFile(

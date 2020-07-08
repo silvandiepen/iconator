@@ -57,9 +57,7 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
                 .replace(/{{appDescription}}/g, settings.appDescription)
                 .replace(/{{appDeveloper}}/g, settings.appDeveloper)
                 .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-            const filePath = settings.destination
-                ? path_1.join(settings.destination, file)
-                : path_1.join(settings.output, file);
+            const filePath = path_1.join(settings.output, file);
             yield _1.createFolder(path_1.dirname(filePath));
             yield writeFile(filePath, filePath.includes(".xml")
                 ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })

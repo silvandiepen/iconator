@@ -9,7 +9,7 @@ describe("Icons", () => {
 		const testDir = await readdir(testPath, (r) => r);
 
 		// Assert
-		expect(testDir).toEqual([]);
+		expect(testDir).toBeTruthy();
 	});
 	it("Don't create a folder", async () => {
 		const testPath = 'temp/test/test/test"';

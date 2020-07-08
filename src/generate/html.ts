@@ -45,7 +45,12 @@ export const buildHtml = async (settings: ISettings): Promise<ISettings> => {
 					.replace(/{{appName}}/g, settings.appName)
 					.replace(/{{background}}/g, settings.color)
 					.replace(/{{themeColor}}/g, settings.themeColor)
-					.replace(/{{output}}/g, settings.output + "/")
+					.replace(
+						/{{output}}/g,
+						settings.destination
+							? settings.destination + "/"
+							: settings.output + "/"
+					)
 					.replace(/{{width}}/g, icon.width?.toString())
 					.replace(/{{orientation}}/g, icon.orientation)
 					.replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())

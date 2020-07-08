@@ -59,7 +59,9 @@ exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* ()
                     .replace(/{{appName}}/g, settings.appName)
                     .replace(/{{background}}/g, settings.color)
                     .replace(/{{themeColor}}/g, settings.themeColor)
-                    .replace(/{{output}}/g, settings.output + "/")
+                    .replace(/{{output}}/g, settings.destination
+                    ? settings.destination + "/"
+                    : settings.output + "/")
                     .replace(/{{width}}/g, (_a = icon.width) === null || _a === void 0 ? void 0 : _a.toString())
                     .replace(/{{orientation}}/g, icon.orientation)
                     .replace(/{{devicePixelRatio}}/g, (_b = icon.devicePxRatio) === null || _b === void 0 ? void 0 : _b.toString())
