@@ -16,16 +16,19 @@ const doIconator = async (settings: ISettings): Promise<IOutput> => {
 	const iconData = await buildIt(settings)
 		.then(getPackage)
 		.then((s) => {
-			!settings.silent && log.START("Iconator");
-			!settings.silent && log.BLOCK_START();
-			!settings.silent &&
+			if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
+				log.START("Iconator");
+				log.BLOCK_START();
+			}
+
+			!s.logging.includes("silent") &&
 				log.BLOCK_LINE(
 					`Iconator (${s.package.version}) is generating your icons.`
 				);
 			return s;
 		})
 		.then(async (s) => {
-			!settings.silent && log.BLOCK_MID("Settings");
+			!s.logging.includes("silent") && log.BLOCK_MID("Settings");
 
 			const filteredSettings = {};
 			Object.keys(s).forEach((key) =>
@@ -34,17 +37,27 @@ const doIconator = async (settings: ISettings): Promise<IOutput> => {
 					: false
 			);
 
-			!settings.silent &&
-				(await log.BLOCK_SETTINGS(s.debug ? s : filteredSettings, {
-					exclude: ["package"],
-				}));
+			if (s.logging.includes("silent")) {
+				if (s.logging.includes("debug"))
+					await log.BLOCK_SETTINGS(filteredSettings, {
+						exclude: ["package"],
+					});
+				else
+					await log.BLOCK_SETTINGS(s, {
+						exclude: ["package"],
+					});
+			}
 			return s;
 		})
 		.then(buildIcons)
 		.then(buildMetaFiles)
 		.then(buildHtml)
 		.then((s) => {
-			!settings.silent && log.BLOCK_END("done!");
+			if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
+				log.BLOCK_END("done!");
+			} else if (!s.logging.includes("silent")) {
+				log.BLOCK_MID();
+			}
 			return {
 				settings: {
 					input: s.input,

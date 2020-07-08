@@ -5,5 +5,5 @@ export const settings: ISettings = {
 	...defaultSettings,
 	input: "test/test.png",
 	output: "temp/dist",
-	silent: true,
+	logging: ["silent"],
 };

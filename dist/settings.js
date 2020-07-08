@@ -10,6 +10,7 @@ exports.defaultSettings = {
     output: "img/favicons",
     destination: "img/favicons",
     debug: false,
+    logging: [],
     color: "white",
     themeColor: "white",
     appleStatusBarStyle: "default",
@@ -80,6 +81,11 @@ exports.settings = () => {
             type: "string",
             default: exports.defaultSettings.appDescription,
         },
+        logging: {
+            require: false,
+            type: "array",
+            default: exports.defaultSettings.logging,
+        },
     }).argv;
     return {
         input: cs.input,
@@ -88,6 +94,7 @@ exports.settings = () => {
         debug: cs.debug,
         color: cs.color,
         themeColor: cs.themeColor,
+        logging: cs.logging,
         appleStatusBarStyle: cs.appleStatusBarStyle,
         appName: cs.appName,
         appDeveloper: cs.appName,

@@ -41,17 +41,19 @@ export const buildIcon = async (
 };
 
 export const buildIcons = async (settings: ISettings): Promise<ISettings> => {
-	!settings.silent && log.BLOCK_MID("Generate Icons");
+	!settings.logging.includes("silent") && log.BLOCK_MID("Generate Icons");
 
 	const allIcons = [];
 
 	await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-		!settings.silent && log.BLOCK_LINE();
-		!settings.silent && log.BLOCK_LINE(groupName.toUpperCase());
+		!settings.logging.includes("silent") && log.BLOCK_LINE();
+		!settings.logging.includes("silent") &&
+			log.BLOCK_LINE(groupName.toUpperCase());
 		await asyncForEach(iconGroups[groupName], async (icon: IIcon) => {
 			allIcons.push(icon);
 			await buildIcon(icon, settings).then(() => {
-				!settings.silent && log.BLOCK_LINE_SUCCESS(icon.name);
+				!settings.logging.includes("silent") &&
+					log.BLOCK_LINE_SUCCESS(icon.name);
 			});
 		});
 	});

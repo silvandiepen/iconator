@@ -32,7 +32,6 @@ Iconator({
 | input               | `assets/favicon.png` | Input file (jpg,png)                                                                                                   |
 | output              | `img/favicons`       | Output directory, where the files will be placed.                                                                      |
 | destination         | `img/favicons`       | When the output is different from the destination which should be used in the meta tags. You can give the destination. |
-| debug               | `false`              | Show debug information.                                                                                                |
 | color               | `white`              | Color used for default backgrounds.                                                                                    |
 | themeColor          | `white`              | Theme color used in the meta tags.                                                                                     |
 | appleStatusBarStyle | `default`            | Apple Status bar style used in the meta tags. (Default, black, black-translucent)                                      |
@@ -40,3 +39,20 @@ Iconator({
 | appDeveloper        | `NULL`               | App developer used in meta tags.                                                                                       |
 | appDeveloperUrl     | `NULL`               | App developer url used in meta tags.                                                                                   |
 | appDescription      | `NULL`               | App description used in meta tags.                                                                                     |
+| logging             | `[]`                 | Logging can be slightly altered, you can give no options for default and `silent`,`inline` and debug.                  |
+
+
+### Logging
+
+Logging can be slightly altered, you can give no options for default and `silent`,`inline` or debug.
+
+By default the logging will be complete, this shows all information. 
+
+**debug**
+Debug will show some more extra information.
+
+**silent**
+Will make sure there is no logging output from Iconator
+
+**inline**
+The loggin has opening and closing elements. these will be hidden when using inline. This option is especially for use in other generators which already provide logging.

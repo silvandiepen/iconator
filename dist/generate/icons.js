@@ -65,15 +65,17 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
     });
 });
 exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    !settings.silent && log.BLOCK_MID("Generate Icons");
+    !settings.logging.includes("silent") && log.BLOCK_MID("Generate Icons");
     const allIcons = [];
     yield utils_1.asyncForEach(Object.keys(icons_json_1.default), (groupName) => __awaiter(void 0, void 0, void 0, function* () {
-        !settings.silent && log.BLOCK_LINE();
-        !settings.silent && log.BLOCK_LINE(groupName.toUpperCase());
+        !settings.logging.includes("silent") && log.BLOCK_LINE();
+        !settings.logging.includes("silent") &&
+            log.BLOCK_LINE(groupName.toUpperCase());
         yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
             allIcons.push(icon);
             yield exports.buildIcon(icon, settings).then(() => {
-                !settings.silent && log.BLOCK_LINE_SUCCESS(icon.name);
+                !settings.logging.includes("silent") &&
+                    log.BLOCK_LINE_SUCCESS(icon.name);
             });
         }));
     }));

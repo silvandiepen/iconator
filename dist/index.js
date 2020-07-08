@@ -42,29 +42,42 @@ const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () 
     const iconData = yield buildIt(settings)
         .then(aggregate_1.getPackage)
         .then((s) => {
-        !settings.silent && log.START("Iconator");
-        !settings.silent && log.BLOCK_START();
-        !settings.silent &&
+        if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
+            log.START("Iconator");
+            log.BLOCK_START();
+        }
+        !s.logging.includes("silent") &&
             log.BLOCK_LINE(`Iconator (${s.package.version}) is generating your icons.`);
         return s;
     })
         .then((s) => __awaiter(void 0, void 0, void 0, function* () {
-        !settings.silent && log.BLOCK_MID("Settings");
+        !s.logging.includes("silent") && log.BLOCK_MID("Settings");
         const filteredSettings = {};
         Object.keys(s).forEach((key) => s[key] !== settings_1.defaultSettings[key]
             ? (filteredSettings[key] = s[key])
             : false);
-        !settings.silent &&
-            (yield log.BLOCK_SETTINGS(s.debug ? s : filteredSettings, {
-                exclude: ["package"],
-            }));
+        if (s.logging.includes("silent")) {
+            if (s.logging.includes("debug"))
+                yield log.BLOCK_SETTINGS(filteredSettings, {
+                    exclude: ["package"],
+                });
+            else
+                yield log.BLOCK_SETTINGS(s, {
+                    exclude: ["package"],
+                });
+        }
         return s;
     }))
         .then(generate_1.buildIcons)
         .then(generate_1.buildMetaFiles)
         .then(generate_1.buildHtml)
         .then((s) => {
-        !settings.silent && log.BLOCK_END("done!");
+        if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
+            log.BLOCK_END("done!");
+        }
+        else if (!s.logging.includes("silent")) {
+            log.BLOCK_MID();
+        }
         return {
             settings: {
                 input: s.input,

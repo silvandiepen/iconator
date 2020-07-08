@@ -33,7 +33,7 @@ export const buildMetaFiles = async (
 					? js2xml(fileData, { compact: true, spaces: 4 })
 					: filedata
 			).then(() => {
-				log.BLOCK_LINE_SUCCESS(file);
+				!settings.logging.includes("silent") && log.BLOCK_LINE_SUCCESS(file);
 			});
 		});
 	});

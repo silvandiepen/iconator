@@ -16,7 +16,7 @@ export interface ISettings extends IOutputSettings {
     debug?: boolean;
     icons?: IIcon[];
     html?: string[];
-    silent?: boolean;
+    logging?: string[];
 }
 export interface IOutput {
     icons: IIcon[];

@@ -58,7 +58,7 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
             yield writeFile(filePath, filePath.includes(".xml")
                 ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
                 : filedata).then(() => {
-                log.BLOCK_LINE_SUCCESS(file);
+                !settings.logging.includes("silent") && log.BLOCK_LINE_SUCCESS(file);
             });
         }));
     }));
