@@ -66,6 +66,7 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (err) {
+        console.log(settings.input);
         throw Error(err);
     }
 });

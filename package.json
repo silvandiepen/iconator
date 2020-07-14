@@ -6,7 +6,7 @@
 	"bin": "dist/cli.js",
 	"scripts": {
 		"build": "tsc",
-		"build:icons:cli": "npm run build && node dist/cli.js --input=test/test.png",
+		"build:icons:cli": "npm run build && node dist/cli.js --input=src/test/test.png",
 		"build:icons:function": "npm run build && node dist/test/functional.js",
 		"test": "npm run build:icons:cli && npm run build:icons:function && npm run test:unit",
 		"test:unit": "jest --verbose",

@@ -40,6 +40,7 @@ export const buildIcon = async (
 				throw Error(err);
 			});
 	} catch (err) {
+		console.log(settings.input);
 		throw Error(err);
 	}
 };
