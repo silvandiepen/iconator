@@ -18,26 +18,30 @@ export const buildIcon = async (
 	icon: IIcon,
 	settings: ISettings
 ): Promise<void> => {
-	await sharp(settings.input)
-		.rotate(icon.rotate ? icon.rotate : 0)
-		.resize(icon.width, icon.height)
-		.flatten(
-			icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } }
-		)
-		.toBuffer()
-		.then(async (data) => {
-			const filePath = join(settings.output, icon.name);
-			await createFolder(dirname(filePath));
+	try {
+		await sharp(settings.input)
+			.rotate(icon.rotate ? icon.rotate : 0)
+			.resize(icon.width, icon.height)
+			.flatten(
+				icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } }
+			)
+			.toBuffer()
+			.then(async (data) => {
+				const filePath = join(settings.output, icon.name);
+				await createFolder(dirname(filePath));
 
-			if (extname(icon.name) === ".ico") {
-				await writeFile(filePath, pngToIco(data));
-			} else {
-				await writeFile(filePath, data);
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+				if (extname(icon.name) === ".ico") {
+					await writeFile(filePath, pngToIco(data));
+				} else {
+					await writeFile(filePath, data);
+				}
+			})
+			.catch((err) => {
+				throw Error(err);
+			});
+	} catch (err) {
+		throw Error(err);
+	}
 };
 
 export const buildIcons = async (settings: ISettings): Promise<ISettings> => {

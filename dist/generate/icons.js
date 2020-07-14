@@ -45,24 +45,29 @@ exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
-    yield sharp_1.default(settings.input)
-        .rotate(icon.rotate ? icon.rotate : 0)
-        .resize(icon.width, icon.height)
-        .flatten(icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } })
-        .toBuffer()
-        .then((data) => __awaiter(void 0, void 0, void 0, function* () {
-        const filePath = path_1.join(settings.output, icon.name);
-        yield exports.createFolder(path_1.dirname(filePath));
-        if (path_1.extname(icon.name) === ".ico") {
-            yield writeFile(filePath, png_to_ico_1.default(data));
-        }
-        else {
-            yield writeFile(filePath, data);
-        }
-    }))
-        .catch((err) => {
-        console.log(err);
-    });
+    try {
+        yield sharp_1.default(settings.input)
+            .rotate(icon.rotate ? icon.rotate : 0)
+            .resize(icon.width, icon.height)
+            .flatten(icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } })
+            .toBuffer()
+            .then((data) => __awaiter(void 0, void 0, void 0, function* () {
+            const filePath = path_1.join(settings.output, icon.name);
+            yield exports.createFolder(path_1.dirname(filePath));
+            if (path_1.extname(icon.name) === ".ico") {
+                yield writeFile(filePath, png_to_ico_1.default(data));
+            }
+            else {
+                yield writeFile(filePath, data);
+            }
+        }))
+            .catch((err) => {
+            throw Error(err);
+        });
+    }
+    catch (err) {
+        throw Error(err);
+    }
 });
 exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     !settings.logging.includes("silent") && log.BLOCK_MID("Generate Icons");

@@ -7,10 +7,10 @@
 	"scripts": {
 		"build": "tsc",
 		"build:icons:cli": "npm run build && node dist/cli.js --input=test/test.png",
-		"build:icons:function": "npm run build && node test/functional.js",
+		"build:icons:function": "npm run build && node dist/test/functional.js",
 		"test": "npm run build:icons:cli && npm run build:icons:function && npm run test:unit",
 		"test:unit": "jest --verbose",
-		"pretest:unit": "node test/clean.js"
+		"pretest:unit": "node dist/test/clean.js"
 	},
 	"repository": {
 		"type": "git",
@@ -37,6 +37,7 @@
 		"@babel/preset-env": "^7.8.4",
 		"@babel/register": "^7.8.3",
 		"@types/jest": "^26.0.3",
+		"@types/rimraf": "^3.0.0",
 		"@types/sharp": "^0.25.0",
 		"husky": "^4.2.5",
 		"jest": "^26.1.0",
@@ -47,6 +48,7 @@
 	"dependencies": {
 		"cli-block": "^1.1.7",
 		"png-to-ico": "^2.1.0",
+		"rimraf": "^3.0.2",
 		"sharp": "^0.25.4",
 		"xml-js": "^1.6.11",
 		"yargs": "^15.3.1"

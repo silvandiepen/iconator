@@ -4,7 +4,7 @@ const { readdir, stat } = require("fs").promises;
 
 describe("Icons", () => {
 	it("Create a folder", async () => {
-		const testPath = 'temp/test/test/test"';
+		const testPath = '../../temp/do"';
 		await createFolder(testPath);
 		const testDir = await readdir(testPath, (r) => r);
 
@@ -12,7 +12,7 @@ describe("Icons", () => {
 		expect(testDir).toBeTruthy();
 	});
 	it("Don't create a folder", async () => {
-		const testPath = 'temp/test/test/test"';
+		const testPath = '../../temp/dont"';
 		try {
 			await createFolder(testPath);
 			await readdir(testPath + "/test", (r) => r);

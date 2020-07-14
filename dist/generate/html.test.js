@@ -21,13 +21,13 @@ describe("Test HTML Creating", () => {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "" });
         const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
         // Assert
-        expect(html[0]).toEqual('<link rel="manifest" href="test/manifest.json">');
+        expect(html[0]).toEqual('<link rel="manifest" href="/test/manifest.json">');
     }));
     it("Result should have an alternative output dir", () => __awaiter(void 0, void 0, void 0, function* () {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "testje2" });
         const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
         // Assert
-        expect(html[0]).toEqual('<link rel="manifest" href="testje2/manifest.json">');
+        expect(html[0]).toEqual('<link rel="manifest" href="/testje2/manifest.json">');
     }));
 });
 //# sourceMappingURL=html.test.js.map

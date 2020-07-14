@@ -14,14 +14,14 @@ const __mock__1 = require("../__mock__");
 const { readdir, stat } = require("fs").promises;
 describe("Icons", () => {
     it("Create a folder", () => __awaiter(void 0, void 0, void 0, function* () {
-        const testPath = 'temp/test/test/test"';
+        const testPath = '../../temp/do"';
         yield icons_1.createFolder(testPath);
         const testDir = yield readdir(testPath, (r) => r);
         // Assert
         expect(testDir).toBeTruthy();
     }));
     it("Don't create a folder", () => __awaiter(void 0, void 0, void 0, function* () {
-        const testPath = 'temp/test/test/test"';
+        const testPath = '../../temp/dont"';
         try {
             yield icons_1.createFolder(testPath);
             yield readdir(testPath + "/test", (r) => r);

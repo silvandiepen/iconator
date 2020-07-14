@@ -13,7 +13,7 @@ describe("Test HTML Creating", () => {
 		const { html } = await buildHtml(altSettings).then((r) => r);
 
 		// Assert
-		expect(html[0]).toEqual('<link rel="manifest" href="test/manifest.json">');
+		expect(html[0]).toEqual('<link rel="manifest" href="/test/manifest.json">');
 	});
 	it("Result should have an alternative output dir", async () => {
 		const altSettings = { ...settings, output: "test", destination: "testje2" };
@@ -21,7 +21,7 @@ describe("Test HTML Creating", () => {
 
 		// Assert
 		expect(html[0]).toEqual(
-			'<link rel="manifest" href="testje2/manifest.json">'
+			'<link rel="manifest" href="/testje2/manifest.json">'
 		);
 	});
 });
