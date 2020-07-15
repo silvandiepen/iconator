@@ -12,5 +12,6 @@ export declare const defaultSettings: {
     appDeveloper: string;
     appDeveloperUrl: string;
     appDescription: string;
+    url: string;
 };
 export declare const settings: () => ISettings;

@@ -68,6 +68,7 @@ const doIconator = async (settings: ISettings): Promise<IOutput> => {
 					appDeveloper: s.appDeveloper,
 					appDeveloperUrl: s.appDeveloperUrl,
 					appDescription: s.appDescription,
+					url: s.url,
 				},
 				icons: s.icons,
 				html: s.html,

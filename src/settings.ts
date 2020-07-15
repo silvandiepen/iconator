@@ -14,6 +14,7 @@ export const defaultSettings = {
 	appDeveloper: "",
 	appDeveloperUrl: "",
 	appDescription: "",
+	url: "",
 };
 
 export const settings = (): ISettings => {
@@ -83,6 +84,11 @@ export const settings = (): ISettings => {
 			type: "array",
 			default: defaultSettings.logging,
 		},
+		url: {
+			require: false,
+			type: "string",
+			default: defaultSettings.url,
+		},
 	}).argv;
 
 	return {
@@ -98,5 +104,6 @@ export const settings = (): ISettings => {
 		appDeveloper: cs.appName,
 		appDeveloperUrl: cs.appName,
 		appDescription: cs.appName,
+		url: cs.url,
 	};
 };

@@ -1,15 +1,16 @@
 import { IIcon } from "./config";
 interface IOutputSettings {
-    input?: string;
-    output?: string;
-    destination?: string;
-    color?: string;
-    themeColor?: string;
-    appleStatusBarStyle?: string;
-    appName?: string;
-    appDeveloper?: string;
-    appDeveloperUrl?: string;
-    appDescription?: string;
+    input: string;
+    output: string;
+    destination: string;
+    color: string;
+    themeColor: string;
+    appleStatusBarStyle: string;
+    appName: string;
+    appDeveloper: string;
+    appDeveloperUrl: string;
+    appDescription: string;
+    url: string;
 }
 export interface ISettings extends IOutputSettings {
     package?: any;

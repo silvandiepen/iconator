@@ -18,6 +18,7 @@ exports.defaultSettings = {
     appDeveloper: "",
     appDeveloperUrl: "",
     appDescription: "",
+    url: "",
 };
 exports.settings = () => {
     const cs = yargs_1.default.options({
@@ -86,6 +87,11 @@ exports.settings = () => {
             type: "array",
             default: exports.defaultSettings.logging,
         },
+        url: {
+            require: false,
+            type: "string",
+            default: exports.defaultSettings.url,
+        },
     }).argv;
     return {
         input: cs.input,
@@ -100,6 +106,7 @@ exports.settings = () => {
         appDeveloper: cs.appName,
         appDeveloperUrl: cs.appName,
         appDescription: cs.appName,
+        url: cs.url,
     };
 };
 //# sourceMappingURL=settings.js.map

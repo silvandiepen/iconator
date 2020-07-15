@@ -40,7 +40,7 @@ Iconator({
 | appDeveloperUrl     | `NULL`               | App developer url used in meta tags.                                                                                   |
 | appDescription      | `NULL`               | App description used in meta tags.                                                                                     |
 | logging             | `[]`                 | Logging can be slightly altered, you can give no options for default and `silent`,`inline` and debug.                  |
-
+| url                 | ``                   | By default all urls are relative. You can give a url to add this to the links for the files                            |
 ### Logging
 
 Logging can be slightly altered, you can give no options for default and `silent`,`inline`, `minimal` or `debug`.
