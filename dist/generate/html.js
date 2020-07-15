@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildHtml = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
-const path_1 = require("path");
 exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* () {
     const html = {
         android: [
@@ -55,14 +54,20 @@ exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* ()
                 var _a, _b, _c;
                 if (line.indexOf("{{width}}") && !icon.width)
                     return;
+                const setUrlPrefix = (settings) => {
+                    const prefix = settings.destination
+                        ? settings.destination
+                        : settings.output;
+                    return settings.url
+                        ? settings.url + "/" + prefix + "/"
+                        : "/" + prefix + "/";
+                };
                 let newLine = line
                     .replace(/{{appleStatusBarStyle}}/, settings.appleStatusBarStyle)
                     .replace(/{{appName}}/g, settings.appName)
                     .replace(/{{background}}/g, settings.color)
                     .replace(/{{themeColor}}/g, settings.themeColor)
-                    .replace(/{{output}}/g, settings.destination
-                    ? "/" + path_1.join(settings.url, settings.destination) + "/"
-                    : "/" + path_1.join(settings.url, settings.output) + "/")
+                    .replace(/{{output}}/g, setUrlPrefix(settings))
                     .replace(/{{width}}/g, (_a = icon.width) === null || _a === void 0 ? void 0 : _a.toString())
                     .replace(/{{orientation}}/g, icon.orientation)
                     .replace(/{{devicePixelRatio}}/g, (_b = icon.devicePxRatio) === null || _b === void 0 ? void 0 : _b.toString())

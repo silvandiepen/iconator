@@ -24,10 +24,16 @@ describe("Test HTML Creating", () => {
         expect(html[0]).toEqual('<link rel="manifest" href="/test/manifest.json">');
     }));
     it("Result should have an alternative output dir", () => __awaiter(void 0, void 0, void 0, function* () {
-        const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "testje2" });
+        const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "test-destination" });
         const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
         // Assert
-        expect(html[0]).toEqual('<link rel="manifest" href="/testje2/manifest.json">');
+        expect(html[0]).toEqual('<link rel="manifest" href="/test-destination/manifest.json">');
+    }));
+    it("Test if the url is being added rightfully", () => __awaiter(void 0, void 0, void 0, function* () {
+        const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { url: "https://testdomain.com", output: "test" });
+        const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
+        // Assert
+        expect(html[0]).toEqual('<link rel="manifest" href="https://testdomain.com/test/manifest.json">');
     }));
 });
 //# sourceMappingURL=html.test.js.map

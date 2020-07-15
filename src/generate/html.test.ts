@@ -16,12 +16,29 @@ describe("Test HTML Creating", () => {
 		expect(html[0]).toEqual('<link rel="manifest" href="/test/manifest.json">');
 	});
 	it("Result should have an alternative output dir", async () => {
-		const altSettings = { ...settings, output: "test", destination: "testje2" };
+		const altSettings = {
+			...settings,
+			output: "test",
+			destination: "test-destination",
+		};
 		const { html } = await buildHtml(altSettings).then((r) => r);
 
 		// Assert
 		expect(html[0]).toEqual(
-			'<link rel="manifest" href="/testje2/manifest.json">'
+			'<link rel="manifest" href="/test-destination/manifest.json">'
+		);
+	});
+	it("Test if the url is being added rightfully", async () => {
+		const altSettings = {
+			...settings,
+			url: "https://testdomain.com",
+			output: "test",
+		};
+		const { html } = await buildHtml(altSettings).then((r) => r);
+
+		// Assert
+		expect(html[0]).toEqual(
+			'<link rel="manifest" href="https://testdomain.com/test/manifest.json">'
 		);
 	});
 });

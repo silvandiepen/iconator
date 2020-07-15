@@ -4,7 +4,7 @@ import { ISettings } from "./types";
 export const defaultSettings = {
 	input: "assets/favicon.png",
 	output: "img/favicons",
-	destination: "img/favicons",
+	destination: "",
 	debug: false,
 	logging: [],
 	color: "white",

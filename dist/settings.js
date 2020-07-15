@@ -8,7 +8,7 @@ const yargs_1 = __importDefault(require("yargs"));
 exports.defaultSettings = {
     input: "assets/favicon.png",
     output: "img/favicons",
-    destination: "img/favicons",
+    destination: "",
     debug: false,
     logging: [],
     color: "white",

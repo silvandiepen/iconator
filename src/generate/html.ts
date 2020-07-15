@@ -41,17 +41,21 @@ export const buildHtml = async (settings: ISettings): Promise<ISettings> => {
 			iconData[category].forEach((icon: IIcon) => {
 				if (line.indexOf("{{width}}") && !icon.width) return;
 
+				const setUrlPrefix = (settings: ISettings): string => {
+					const prefix = settings.destination
+						? settings.destination
+						: settings.output;
+					return settings.url
+						? settings.url + "/" + prefix + "/"
+						: "/" + prefix + "/";
+				};
+
 				let newLine = line
 					.replace(/{{appleStatusBarStyle}}/, settings.appleStatusBarStyle)
 					.replace(/{{appName}}/g, settings.appName)
 					.replace(/{{background}}/g, settings.color)
 					.replace(/{{themeColor}}/g, settings.themeColor)
-					.replace(
-						/{{output}}/g,
-						settings.destination
-							? "/" + join(settings.url, settings.destination) + "/"
-							: "/" + join(settings.url, settings.output) + "/"
-					)
+					.replace(/{{output}}/g, setUrlPrefix(settings))
 					.replace(/{{width}}/g, icon.width?.toString())
 					.replace(/{{orientation}}/g, icon.orientation)
 					.replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())
