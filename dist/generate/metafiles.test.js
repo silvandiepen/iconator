@@ -9,16 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPackage = void 0;
-const { readFile } = require("fs").promises;
-const path_1 = require("path");
-exports.getPackage = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        let PackageData = yield readFile(path_1.join(__dirname, "../package.json")).then((res) => res.toString());
-        return Object.assign(Object.assign({}, settings), { package: JSON.parse(PackageData) });
-    }
-    catch (err) {
-        return settings;
-    }
+const metafiles_1 = require("./metafiles");
+const __mock__1 = require("../__mock__");
+const { readdir } = require("fs").promises;
+describe("Metafiles", () => {
+    it("Create MetaFiles", () => __awaiter(void 0, void 0, void 0, function* () {
+        const testPath = 'temp/test/test/test"';
+        let newSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: testPath });
+        yield metafiles_1.buildMetaFiles(newSettings);
+        const testDir = yield readdir(testPath, (r) => r);
+        // Assert
+        expect(testDir.length).toEqual(4);
+    }));
 });
-//# sourceMappingURL=aggregate.js.map
+//# sourceMappingURL=metafiles.test.js.map

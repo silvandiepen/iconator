@@ -31,7 +31,8 @@ export const buildIcon = async (
 				await createFolder(dirname(filePath));
 
 				if (extname(icon.name) === ".ico") {
-					await writeFile(filePath, pngToIco(data));
+					const icoFile = await pngToIco(data);
+					await writeFile(filePath, icoFile);
 				} else {
 					await writeFile(filePath, data);
 				}
@@ -40,7 +41,6 @@ export const buildIcon = async (
 				throw Error(err);
 			});
 	} catch (err) {
-		console.log(settings.input);
 		throw Error(err);
 	}
 };
@@ -66,11 +66,16 @@ export const buildIcons = async (settings: ISettings): Promise<ISettings> => {
 
 		await asyncForEach(iconGroups[groupName], async (icon: IIcon) => {
 			allIcons.push(icon);
-			await buildIcon(icon, settings).then(() => {
-				!settings.logging.includes("silent") &&
-					!settings.logging.includes("minimal") &&
-					log.BLOCK_LINE_SUCCESS(icon.name);
-			});
+
+			try {
+				await buildIcon(icon, settings).then(() => {
+					!settings.logging.includes("silent") &&
+						!settings.logging.includes("minimal") &&
+						log.BLOCK_LINE_SUCCESS(icon.name);
+				});
+			} catch (err) {
+				throw Error(err);
+			}
 		});
 	});
 	return { ...settings, icons: allIcons };

@@ -9,7 +9,6 @@ export const getPackage = async (settings: ISettings): Promise<ISettings> => {
 		).then((res) => res.toString());
 		return { ...settings, package: JSON.parse(PackageData) };
 	} catch (err) {
-		// console.log(err);
+		return settings;
 	}
-	return settings;
 };

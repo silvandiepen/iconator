@@ -55,7 +55,8 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
             const filePath = path_1.join(settings.output, icon.name);
             yield exports.createFolder(path_1.dirname(filePath));
             if (path_1.extname(icon.name) === ".ico") {
-                yield writeFile(filePath, png_to_ico_1.default(data));
+                const icoFile = yield png_to_ico_1.default(data);
+                yield writeFile(filePath, icoFile);
             }
             else {
                 yield writeFile(filePath, data);
@@ -66,7 +67,6 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (err) {
-        console.log(settings.input);
         throw Error(err);
     }
 });
@@ -85,11 +85,16 @@ exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* (
         }
         yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
             allIcons.push(icon);
-            yield exports.buildIcon(icon, settings).then(() => {
-                !settings.logging.includes("silent") &&
-                    !settings.logging.includes("minimal") &&
-                    log.BLOCK_LINE_SUCCESS(icon.name);
-            });
+            try {
+                yield exports.buildIcon(icon, settings).then(() => {
+                    !settings.logging.includes("silent") &&
+                        !settings.logging.includes("minimal") &&
+                        log.BLOCK_LINE_SUCCESS(icon.name);
+                });
+            }
+            catch (err) {
+                throw Error(err);
+            }
         }));
     }));
     return Object.assign(Object.assign({}, settings), { icons: allIcons });
