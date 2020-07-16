@@ -33,8 +33,6 @@ export const buildMetaFiles = async (
 			const filePath = join(settings.output, file);
 			await createFolder(dirname(filePath));
 
-			console.log(filePath);
-
 			await writeFile(
 				filePath,
 				filePath.includes(".xml")
