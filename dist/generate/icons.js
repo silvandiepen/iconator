@@ -35,9 +35,9 @@ exports.buildIcons = exports.buildIcon = exports.createFolder = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
 const log = __importStar(require("cli-block"));
 const utils_1 = require("../utils");
-const sharp_1 = __importDefault(require("sharp"));
 const path_1 = require("path");
 const png_to_ico_1 = __importDefault(require("png-to-ico"));
+const jimp_1 = __importDefault(require("jimp"));
 const { writeFile, mkdir } = require("fs").promises;
 exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* () {
     yield mkdir(folder, { recursive: true }, () => {
@@ -46,20 +46,20 @@ exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield sharp_1.default(settings.input)
-            .rotate(icon.rotate ? icon.rotate : 0)
-            .resize(icon.width, icon.height)
-            .flatten(icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } })
-            .toBuffer()
-            .then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        jimp_1.default.read(settings.input)
+            .then((image) => __awaiter(void 0, void 0, void 0, function* () {
+            icon.width && icon.height && image.scaleToFit(icon.width, icon.height);
+            icon.rotate && image.rotate(icon.rotate);
+            !icon.transparent && image.background(0xffffffff);
             const filePath = path_1.join(settings.output, icon.name);
             yield exports.createFolder(path_1.dirname(filePath));
+            const buffer = yield image.getBufferAsync(jimp_1.default.MIME_PNG);
             if (path_1.extname(icon.name) === ".ico") {
-                const icoFile = yield png_to_ico_1.default(data);
+                const icoFile = yield png_to_ico_1.default(buffer);
                 yield writeFile(filePath, icoFile);
             }
             else {
-                yield writeFile(filePath, data);
+                yield writeFile(filePath, buffer);
             }
         }))
             .catch((err) => {
