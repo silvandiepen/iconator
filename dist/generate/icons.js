@@ -35,11 +35,10 @@ exports.buildIcons = exports.buildIcon = exports.createFolder = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
 const log = __importStar(require("cli-block"));
 const utils_1 = require("../utils");
-// import sharp from "sharp";
 const path_1 = require("path");
 const png_to_ico_1 = __importDefault(require("png-to-ico"));
 const jimp_1 = __importDefault(require("jimp"));
-const { writeFile, mkdir, stat, readFile } = require("fs").promises;
+const { writeFile, mkdir } = require("fs").promises;
 exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* () {
     yield mkdir(folder, { recursive: true }, () => {
         return;
@@ -47,10 +46,7 @@ exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const stats = await stat(settings.input);
-        // let file = stats ? await readFile(settings.input) : settings.input;
-        // console.log(file);
-        const image = jimp_1.default.read(settings.input)
+        jimp_1.default.read(settings.input)
             .then((image) => __awaiter(void 0, void 0, void 0, function* () {
             icon.width && icon.height && image.scaleToFit(icon.width, icon.height);
             icon.rotate && image.rotate(icon.rotate);
@@ -69,26 +65,6 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
             .catch((err) => {
             throw Error(err);
         });
-        // await sharp(settings.input)
-        // 	.rotate(icon.rotate ? icon.rotate : 0)
-        // 	.resize(icon.width, icon.height)
-        // 	.flatten(
-        // 		icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } }
-        // 	)
-        // 	.toBuffer()
-        // 	.then(async (data) => {
-        // 		const filePath = join(settings.output, icon.name);
-        // 		await createFolder(dirname(filePath));
-        // 		if (extname(icon.name) === ".ico") {
-        // 			const icoFile = await pngToIco(data);
-        // 			await writeFile(filePath, icoFile);
-        // 		} else {
-        // 			await writeFile(filePath, data);
-        // 		}
-        // 	})
-        // 	.catch((err) => {
-        // 		throw Error(err);
-        // 	});
     }
     catch (err) {
         throw Error(err);
