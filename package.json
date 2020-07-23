@@ -48,9 +48,9 @@
 	},
 	"dependencies": {
 		"cli-block": "^1.1.7",
+		"jimp": "^0.14.0",
 		"png-to-ico": "^2.1.0",
 		"rimraf": "^3.0.2",
-		"sharp": "^0.25.4",
 		"xml-js": "^1.6.11",
 		"yargs": "^15.3.1"
 	}

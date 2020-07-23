@@ -2,9 +2,9 @@ import { ISettings, IIcon } from "../types";
 import iconGroups from "../icons.json";
 import * as log from "cli-block";
 import { asyncForEach } from "../utils";
-import sharp from "sharp";
 import { join, dirname, extname } from "path";
 import pngToIco from "png-to-ico";
+import Jimp from "jimp";
 
 const { writeFile, mkdir } = require("fs").promises;
 
@@ -19,22 +19,22 @@ export const buildIcon = async (
 	settings: ISettings
 ): Promise<void> => {
 	try {
-		await sharp(settings.input)
-			.rotate(icon.rotate ? icon.rotate : 0)
-			.resize(icon.width, icon.height)
-			.flatten(
-				icon.transparent ? false : { background: { r: 255, g: 255, b: 255 } }
-			)
-			.toBuffer()
-			.then(async (data) => {
+		Jimp.read(settings.input)
+			.then(async (image) => {
+				icon.width && icon.height && image.scaleToFit(icon.width, icon.height);
+				icon.rotate && image.rotate(icon.rotate);
+				!icon.transparent && image.background(0xffffffff);
+
 				const filePath = join(settings.output, icon.name);
 				await createFolder(dirname(filePath));
 
+				const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+
 				if (extname(icon.name) === ".ico") {
-					const icoFile = await pngToIco(data);
+					const icoFile = await pngToIco(buffer);
 					await writeFile(filePath, icoFile);
 				} else {
-					await writeFile(filePath, data);
+					await writeFile(filePath, buffer);
 				}
 			})
 			.catch((err) => {
