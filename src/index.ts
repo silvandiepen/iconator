@@ -21,16 +21,18 @@ const doIconator = async (settings: Settings): Promise<Output> => {
         log.BLOCK_START();
       }
 
-      !s.logging.includes("silent") &&
+      !s.logging.includes("inline") &&
+        !s.logging.includes("silent") &&
         !s.logging.includes("minimal") &&
         log.BLOCK_LINE(
-          `Iconator (${s.package.version}) is generating your icons.`
+          `Iconator ${s.package.version} is generating your icons.`
         );
       return s;
     })
     .then(async (s) => {
       if (!s.logging.includes("silent") && !s.logging.includes("minimal")) {
-        log.BLOCK_MID("Settings");
+        if (!s.logging.includes("inline")) log.BLOCK_MID("Settings");
+        else log.BLOCK_MID(`Iconator   ${s.package.version} Settings`);
 
         const filteredSettings = {};
         Object.keys(s).forEach((key) =>
@@ -41,6 +43,10 @@ const doIconator = async (settings: Settings): Promise<Output> => {
         if (s.logging.includes("debug"))
           await log.BLOCK_SETTINGS(s, {
             exclude: ["package"],
+          });
+        else if (s.logging.includes("inline"))
+          await log.BLOCK_SETTINGS(s, {
+            exclude: ["package", "logging"],
           });
         else
           await log.BLOCK_SETTINGS(filteredSettings, {

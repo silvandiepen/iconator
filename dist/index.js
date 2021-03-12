@@ -46,14 +46,18 @@ const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () 
             log.START("Iconator");
             log.BLOCK_START();
         }
-        !s.logging.includes("silent") &&
+        !s.logging.includes("inline") &&
+            !s.logging.includes("silent") &&
             !s.logging.includes("minimal") &&
-            log.BLOCK_LINE(`Iconator (${s.package.version}) is generating your icons.`);
+            log.BLOCK_LINE(`Iconator ${s.package.version} is generating your icons.`);
         return s;
     })
         .then((s) => __awaiter(void 0, void 0, void 0, function* () {
         if (!s.logging.includes("silent") && !s.logging.includes("minimal")) {
-            log.BLOCK_MID("Settings");
+            if (!s.logging.includes("inline"))
+                log.BLOCK_MID("Settings");
+            else
+                log.BLOCK_MID(`Iconator   ${s.package.version} Settings`);
             const filteredSettings = {};
             Object.keys(s).forEach((key) => s[key] !== settings_1.defaultSettings[key]
                 ? (filteredSettings[key] = s[key])
@@ -61,6 +65,10 @@ const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () 
             if (s.logging.includes("debug"))
                 yield log.BLOCK_SETTINGS(s, {
                     exclude: ["package"],
+                });
+            else if (s.logging.includes("inline"))
+                yield log.BLOCK_SETTINGS(s, {
+                    exclude: ["package", "logging"],
                 });
             else
                 yield log.BLOCK_SETTINGS(filteredSettings, {
