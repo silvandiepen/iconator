@@ -9,6 +9,8 @@ import * as log from "cli-block";
 const { writeFile } = require("fs").promises;
 
 export const buildMetaFiles = async (settings: Settings): Promise<Settings> => {
+  if (settings.meta.length == 1 && settings.meta[0] == "none") return;
+
   if (
     !settings.logging.includes("silent") &&
     !settings.logging.includes("minimal")

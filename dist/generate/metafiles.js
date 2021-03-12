@@ -40,6 +40,8 @@ const xml_js_1 = require("xml-js");
 const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
 exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+    if (settings.meta.length == 1 && settings.meta[0] == "none")
+        return;
     if (!settings.logging.includes("silent") &&
         !settings.logging.includes("minimal")) {
         log.BLOCK_LINE();
