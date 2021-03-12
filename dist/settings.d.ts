@@ -6,6 +6,7 @@ export declare const defaultSettings: {
     debug: boolean;
     logging: any[];
     sets: any[];
+    meta: any[];
     color: string;
     themeColor: string;
     appleStatusBarStyle: string;

@@ -8,6 +8,7 @@ export const defaultSettings = {
   debug: false,
   logging: [],
   sets: [],
+  meta: [],
   color: "white",
   themeColor: "white",
   appleStatusBarStyle: "default",
@@ -59,6 +60,11 @@ export const settings = (): Settings => {
       required: false,
       type: "array",
       default: defaultSettings.sets,
+    },
+    meta: {
+      required: false,
+      type: "array",
+      default: defaultSettings.meta,
     },
     debug: {
       required: false,

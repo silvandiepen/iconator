@@ -21,6 +21,7 @@ export interface Settings extends OutputSettings {
   html?: string[];
   logging?: string[];
   sets?: string[];
+  meta?: string[];
 }
 export interface Output {
   icons: Icon[];

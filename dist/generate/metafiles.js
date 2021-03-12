@@ -49,24 +49,26 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
         log.BLOCK_LINE_SUCCESS("Meta files");
     }
     yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
-        yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
-            const tempFileData = JSON.stringify(files_json_1.default[category][file])
-                .replace(/{{color}}/g, settings.color)
-                .replace(/{{themeColor}}/g, settings.themeColor)
-                .replace(/{{appName}}/g, settings.appName)
-                .replace(/{{appDescription}}/g, settings.appDescription)
-                .replace(/{{appDeveloper}}/g, settings.appDeveloper)
-                .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-            const filePath = path_1.join(settings.output, file);
-            yield _1.createFolder(path_1.dirname(filePath));
-            yield writeFile(filePath, filePath.includes(".xml")
-                ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
-                : tempFileData).then(() => {
-                !settings.logging.includes("silent") &&
-                    !settings.logging.includes("minimal") &&
-                    log.BLOCK_LINE_SUCCESS(file);
-            });
-        }));
+        if (!settings.meta || settings.meta.includes(category)) {
+            yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
+                const tempFileData = JSON.stringify(files_json_1.default[category][file])
+                    .replace(/{{color}}/g, settings.color)
+                    .replace(/{{themeColor}}/g, settings.themeColor)
+                    .replace(/{{appName}}/g, settings.appName)
+                    .replace(/{{appDescription}}/g, settings.appDescription)
+                    .replace(/{{appDeveloper}}/g, settings.appDeveloper)
+                    .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
+                const filePath = path_1.join(settings.output, file);
+                yield _1.createFolder(path_1.dirname(filePath));
+                yield writeFile(filePath, filePath.includes(".xml")
+                    ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
+                    : tempFileData).then(() => {
+                    !settings.logging.includes("silent") &&
+                        !settings.logging.includes("minimal") &&
+                        log.BLOCK_LINE_SUCCESS(file);
+                });
+            }));
+        }
     }));
     return settings;
 });

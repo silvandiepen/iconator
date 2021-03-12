@@ -12,6 +12,7 @@ exports.defaultSettings = {
     debug: false,
     logging: [],
     sets: [],
+    meta: [],
     color: "white",
     themeColor: "white",
     appleStatusBarStyle: "default",
@@ -62,6 +63,11 @@ exports.settings = () => {
             required: false,
             type: "array",
             default: exports.defaultSettings.sets,
+        },
+        meta: {
+            required: false,
+            type: "array",
+            default: exports.defaultSettings.meta,
         },
         debug: {
             required: false,
