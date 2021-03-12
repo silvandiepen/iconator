@@ -1,9 +1,11 @@
 {
 	"name": "iconator",
-	"version": "0.1.17",
+	"version": "0.1.18",
 	"description": "Generate Favicons and other icons",
 	"main": "dist/index.js",
-	"bin": "dist/cli.js",
+	"bin": {
+		"iconator": "dist/cli.js"
+	},
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc -w",
