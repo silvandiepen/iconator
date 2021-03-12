@@ -46,7 +46,7 @@ exports.createFolder = (folder) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        jimp_1.default.read(settings.input)
+        yield jimp_1.default.read(settings.input)
             .then((image) => __awaiter(void 0, void 0, void 0, function* () {
             icon.width && icon.height && image.scaleToFit(icon.width, icon.height);
             icon.rotate && image.rotate(icon.rotate);
@@ -71,24 +71,23 @@ exports.buildIcon = (icon, settings) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    !settings.logging.includes("silent") && log.BLOCK_MID("Generate Icons");
+    const isConfig = (value) => settings.logging.includes(value);
+    !isConfig("silent") && log.BLOCK_MID("Generate Icons");
     const allIcons = [];
     yield utils_1.asyncForEach(Object.keys(icons_json_1.default), (groupName) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!settings.logging.includes("silent") &&
-            !settings.logging.includes("minimal")) {
+        if (!isConfig("silent") && !isConfig("minimal")) {
             log.BLOCK_LINE();
             log.BLOCK_LINE(groupName.toUpperCase());
         }
-        else if (!settings.logging.includes("silent") &&
-            settings.logging.includes("minimal")) {
+        else if (!isConfig("silent") && isConfig("minimal")) {
             log.BLOCK_LINE_SUCCESS(groupName);
         }
         yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
             allIcons.push(icon);
             try {
                 yield exports.buildIcon(icon, settings).then(() => {
-                    !settings.logging.includes("silent") &&
-                        !settings.logging.includes("minimal") &&
+                    !isConfig("silent") &&
+                        !isConfig("minimal") &&
                         log.BLOCK_LINE_SUCCESS(icon.name);
                 });
             }

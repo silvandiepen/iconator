@@ -1,19 +1,19 @@
-export interface IIcon {
+export interface Icon {
     name: string;
     width?: number;
     height?: number;
-    sizes?: IIconSizes;
+    sizes?: IconSizes;
     transparent: boolean;
     rotate: false | number;
     mask: boolean;
     orientation?: "landscape" | "portrait";
     devicePxRatio?: number;
 }
-interface IIconSizes {
+interface IconSizes {
     width: number;
     height: number;
 }
-export interface IIcons {
-    [key: string]: IIcon[];
+export interface Icons {
+    [key: string]: Icon[];
 }
 export {};

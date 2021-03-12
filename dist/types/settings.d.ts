@@ -1,7 +1,9 @@
-import { IIcon } from "./config";
-interface IOutputSettings {
+import { Icon } from "./config";
+export interface InputSettings {
     input: string;
     output: string;
+}
+interface OutputSettings extends InputSettings {
     destination: string;
     color: string;
     themeColor: string;
@@ -12,16 +14,17 @@ interface IOutputSettings {
     appDescription: string;
     url: string;
 }
-export interface ISettings extends IOutputSettings {
+export interface Settings extends OutputSettings {
     package?: any;
     debug?: boolean;
-    icons?: IIcon[];
+    icons?: Icon[];
     html?: string[];
     logging?: string[];
+    sets?: string[];
 }
-export interface IOutput {
-    icons: IIcon[];
+export interface Output {
+    icons: Icon[];
     html: string[];
-    settings: ISettings;
+    settings: Settings;
 }
 export {};

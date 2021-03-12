@@ -1,2 +1,2 @@
-import { ISettings } from "./types";
-export declare const getPackage: (settings: ISettings) => Promise<ISettings>;
+import { Settings } from "./types";
+export declare const getPackage: (settings: Settings) => Promise<Settings>;

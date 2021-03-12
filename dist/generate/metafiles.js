@@ -50,7 +50,7 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
     }
     yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
-            const filedata = JSON.stringify(files_json_1.default[category][file])
+            const tempFileData = JSON.stringify(files_json_1.default[category][file])
                 .replace(/{{color}}/g, settings.color)
                 .replace(/{{themeColor}}/g, settings.themeColor)
                 .replace(/{{appName}}/g, settings.appName)
@@ -61,7 +61,7 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
             yield _1.createFolder(path_1.dirname(filePath));
             yield writeFile(filePath, filePath.includes(".xml")
                 ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
-                : filedata).then(() => {
+                : tempFileData).then(() => {
                 !settings.logging.includes("silent") &&
                     !settings.logging.includes("minimal") &&
                     log.BLOCK_LINE_SUCCESS(file);

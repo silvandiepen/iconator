@@ -1,10 +1,11 @@
-import { ISettings } from "./types";
+import { Settings } from "./types";
 export declare const defaultSettings: {
     input: string;
     output: string;
     destination: string;
     debug: boolean;
     logging: any[];
+    sets: any[];
     color: string;
     themeColor: string;
     appleStatusBarStyle: string;
@@ -14,4 +15,4 @@ export declare const defaultSettings: {
     appDescription: string;
     url: string;
 };
-export declare const settings: () => ISettings;
+export declare const settings: () => Settings;

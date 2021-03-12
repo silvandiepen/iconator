@@ -11,6 +11,7 @@ exports.defaultSettings = {
     destination: "",
     debug: false,
     logging: [],
+    sets: [],
     color: "white",
     themeColor: "white",
     appleStatusBarStyle: "default",
@@ -56,6 +57,11 @@ exports.settings = () => {
             require: false,
             type: "string",
             default: exports.defaultSettings.appleStatusBarStyle,
+        },
+        sets: {
+            required: false,
+            type: "array",
+            default: exports.defaultSettings.sets,
         },
         debug: {
             required: false,
@@ -107,6 +113,7 @@ exports.settings = () => {
         appDeveloperUrl: cs.appName,
         appDescription: cs.appName,
         url: cs.url,
+        sets: cs.icons,
     };
 };
 //# sourceMappingURL=settings.js.map

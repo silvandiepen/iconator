@@ -1,2 +1,2 @@
-import { ISettings } from "../types";
-export declare const settings: ISettings;
+import { Settings } from "../types";
+export declare const settings: Settings;
