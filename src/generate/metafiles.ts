@@ -9,7 +9,8 @@ import * as log from "cli-block";
 const { writeFile } = require("fs").promises;
 
 export const buildMetaFiles = async (settings: Settings): Promise<Settings> => {
-  if (settings.meta.length == 1 && settings.meta[0] == "none") return;
+  if (settings.meta && settings.meta.length == 1 && settings.meta[0] == "none")
+    return;
 
   if (
     !settings.logging.includes("silent") &&
@@ -22,29 +23,32 @@ export const buildMetaFiles = async (settings: Settings): Promise<Settings> => {
   }
   await asyncForEach(Object.keys(fileData), async (category) => {
     if (!settings.meta || settings.meta.includes(category)) {
-      await asyncForEach(Object.keys(fileData[category]), async (file) => {
-        const tempFileData = JSON.stringify(fileData[category][file])
-          .replace(/{{color}}/g, settings.color)
-          .replace(/{{themeColor}}/g, settings.themeColor)
-          .replace(/{{appName}}/g, settings.appName)
-          .replace(/{{appDescription}}/g, settings.appDescription)
-          .replace(/{{appDeveloper}}/g, settings.appDeveloper)
-          .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
+      await asyncForEach(
+        Object.keys(fileData[category]),
+        async (filename: string) => {
+          const tempFileData = JSON.stringify(fileData[category][filename])
+            .replace(/{{color}}/g, settings.color)
+            .replace(/{{themeColor}}/g, settings.themeColor)
+            .replace(/{{appName}}/g, settings.appName)
+            .replace(/{{appDescription}}/g, settings.appDescription)
+            .replace(/{{appDeveloper}}/g, settings.appDeveloper)
+            .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
 
-        const filePath = join(settings.output, file);
-        await createFolder(dirname(filePath));
+          const filePath = join(settings.output, filename);
+          await createFolder(dirname(filePath));
 
-        await writeFile(
-          filePath,
-          filePath.includes(".xml")
-            ? js2xml(fileData, { compact: true, spaces: 4 })
-            : tempFileData
-        ).then(() => {
-          !settings.logging.includes("silent") &&
-            !settings.logging.includes("minimal") &&
-            log.BLOCK_LINE_SUCCESS(file);
-        });
-      });
+          await writeFile(
+            filePath,
+            filePath.includes(".xml")
+              ? js2xml(fileData, { compact: true, spaces: 4 })
+              : tempFileData
+          ).then(() => {
+            !settings.logging.includes("silent") &&
+              !settings.logging.includes("minimal") &&
+              log.BLOCK_LINE_SUCCESS(filename);
+          });
+        }
+      );
     }
   });
 

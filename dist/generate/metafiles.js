@@ -40,7 +40,7 @@ const xml_js_1 = require("xml-js");
 const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
 exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    if (settings.meta.length == 1 && settings.meta[0] == "none")
+    if (settings.meta && settings.meta.length == 1 && settings.meta[0] == "none")
         return;
     if (!settings.logging.includes("silent") &&
         !settings.logging.includes("minimal")) {
@@ -52,22 +52,22 @@ exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, functio
     }
     yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         if (!settings.meta || settings.meta.includes(category)) {
-            yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (file) => __awaiter(void 0, void 0, void 0, function* () {
-                const tempFileData = JSON.stringify(files_json_1.default[category][file])
+            yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
+                const tempFileData = JSON.stringify(files_json_1.default[category][filename])
                     .replace(/{{color}}/g, settings.color)
                     .replace(/{{themeColor}}/g, settings.themeColor)
                     .replace(/{{appName}}/g, settings.appName)
                     .replace(/{{appDescription}}/g, settings.appDescription)
                     .replace(/{{appDeveloper}}/g, settings.appDeveloper)
                     .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-                const filePath = path_1.join(settings.output, file);
+                const filePath = path_1.join(settings.output, filename);
                 yield _1.createFolder(path_1.dirname(filePath));
                 yield writeFile(filePath, filePath.includes(".xml")
                     ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
                     : tempFileData).then(() => {
                     !settings.logging.includes("silent") &&
                         !settings.logging.includes("minimal") &&
-                        log.BLOCK_LINE_SUCCESS(file);
+                        log.BLOCK_LINE_SUCCESS(filename);
                 });
             }));
         }
