@@ -1,18 +1,16 @@
 import { Icon } from "./config";
-export interface InputSettings {
+interface OutputSettings {
     input: string;
     output: string;
-}
-interface OutputSettings extends InputSettings {
-    destination: string;
-    color: string;
-    themeColor: string;
-    appleStatusBarStyle: string;
-    appName: string;
-    appDeveloper: string;
-    appDeveloperUrl: string;
-    appDescription: string;
-    url: string;
+    destination?: string;
+    color?: string;
+    themeColor?: string;
+    appleStatusBarStyle?: string;
+    appName?: string;
+    appDeveloper?: string;
+    appDeveloperUrl?: string;
+    appDescription?: string;
+    url?: string;
 }
 export interface Settings extends OutputSettings {
     package?: any;

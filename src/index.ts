@@ -7,7 +7,7 @@ import * as log from "cli-block";
 import { settings, defaultSettings } from "./settings";
 import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
-import { Settings, Output, InputSettings } from "./types";
+import { Settings, Output } from "./types";
 
 const buildIt = async (settings: Settings): Promise<Settings> => {
   return settings;
@@ -77,7 +77,7 @@ const doIconator = async (settings: Settings): Promise<Output> => {
   return iconData;
 };
 
-const buildIconator = async (config: InputSettings = settings()) => {
+const buildIconator = async (config: Settings = settings()) => {
   const mergedSettings = Object.assign(settings(), config);
   const result = await doIconator(mergedSettings);
   return result;

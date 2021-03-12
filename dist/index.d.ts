@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import { Output, InputSettings } from "./types";
-declare const buildIconator: (config?: InputSettings) => Promise<Output>;
+import { Settings, Output } from "./types";
+declare const buildIconator: (config?: Settings) => Promise<Output>;
 export default buildIconator;
