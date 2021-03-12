@@ -1,6 +1,6 @@
 {
 	"name": "iconator",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"description": "Generate Favicons and other icons",
 	"main": "dist/index.js",
 	"bin": {
