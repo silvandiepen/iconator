@@ -53,26 +53,29 @@ export const buildIcons = async (settings: Settings): Promise<Settings> => {
   const allIcons = [];
 
   await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-    if (!isConfig("silent") && !isConfig("minimal")) {
-      log.BLOCK_LINE();
-      log.BLOCK_LINE(groupName.toUpperCase());
-    } else if (!isConfig("silent") && isConfig("minimal")) {
-      log.BLOCK_LINE_SUCCESS(groupName);
-    }
-
-    await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
-      allIcons.push(icon);
-
-      try {
-        await buildIcon(icon, settings).then(() => {
-          !isConfig("silent") &&
-            !isConfig("minimal") &&
-            log.BLOCK_LINE_SUCCESS(icon.name);
-        });
-      } catch (err) {
-        throw Error(err);
+    if (!settings.sets || settings.sets.includes(groupName)) {
+      if (!isConfig("silent") && !isConfig("minimal")) {
+        log.BLOCK_LINE();
+        log.BLOCK_LINE(groupName.toUpperCase());
+      } else if (!isConfig("silent") && isConfig("minimal")) {
+        log.BLOCK_LINE_SUCCESS(groupName);
       }
-    });
+
+      await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
+        allIcons.push(icon);
+
+        try {
+          await buildIcon(icon, settings).then(() => {
+            !isConfig("silent") &&
+              !isConfig("minimal") &&
+              log.BLOCK_LINE_SUCCESS(icon.name);
+          });
+        } catch (err) {
+          throw Error(err);
+        }
+      });
+    }
   });
+
   return { ...settings, icons: allIcons };
 };

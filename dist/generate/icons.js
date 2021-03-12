@@ -75,26 +75,28 @@ exports.buildIcons = (settings) => __awaiter(void 0, void 0, void 0, function* (
     !isConfig("silent") && log.BLOCK_MID("Generate Icons");
     const allIcons = [];
     yield utils_1.asyncForEach(Object.keys(icons_json_1.default), (groupName) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!isConfig("silent") && !isConfig("minimal")) {
-            log.BLOCK_LINE();
-            log.BLOCK_LINE(groupName.toUpperCase());
-        }
-        else if (!isConfig("silent") && isConfig("minimal")) {
-            log.BLOCK_LINE_SUCCESS(groupName);
-        }
-        yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
-            allIcons.push(icon);
-            try {
-                yield exports.buildIcon(icon, settings).then(() => {
-                    !isConfig("silent") &&
-                        !isConfig("minimal") &&
-                        log.BLOCK_LINE_SUCCESS(icon.name);
-                });
+        if (!settings.sets || settings.sets.includes(groupName)) {
+            if (!isConfig("silent") && !isConfig("minimal")) {
+                log.BLOCK_LINE();
+                log.BLOCK_LINE(groupName.toUpperCase());
             }
-            catch (err) {
-                throw Error(err);
+            else if (!isConfig("silent") && isConfig("minimal")) {
+                log.BLOCK_LINE_SUCCESS(groupName);
             }
-        }));
+            yield utils_1.asyncForEach(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
+                allIcons.push(icon);
+                try {
+                    yield exports.buildIcon(icon, settings).then(() => {
+                        !isConfig("silent") &&
+                            !isConfig("minimal") &&
+                            log.BLOCK_LINE_SUCCESS(icon.name);
+                    });
+                }
+                catch (err) {
+                    throw Error(err);
+                }
+            }));
+        }
     }));
     return Object.assign(Object.assign({}, settings), { icons: allIcons });
 });
