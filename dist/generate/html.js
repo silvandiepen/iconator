@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildHtml = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
-exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+exports.buildHtml = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const html = {
         android: [
             `<link rel="manifest" href="{{output}}manifest.json">`,
@@ -54,20 +54,20 @@ exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* ()
                 var _a, _b, _c;
                 if (line.indexOf("{{width}}") && !icon.width)
                     return;
-                const setUrlPrefix = (settings) => {
-                    const prefix = settings.destination
-                        ? settings.destination
-                        : settings.output;
-                    return settings.url
-                        ? settings.url + "/" + prefix + "/"
+                const setUrlPrefix = (payload) => {
+                    const prefix = payload.destination
+                        ? payload.destination
+                        : payload.output;
+                    return payload.url
+                        ? payload.url + "/" + prefix + "/"
                         : "/" + prefix + "/";
                 };
                 let newLine = line
-                    .replace(/{{appleStatusBarStyle}}/, settings.appleStatusBarStyle)
-                    .replace(/{{appName}}/g, settings.appName)
-                    .replace(/{{background}}/g, settings.color)
-                    .replace(/{{themeColor}}/g, settings.themeColor)
-                    .replace(/{{output}}/g, setUrlPrefix(settings))
+                    .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
+                    .replace(/{{appName}}/g, payload.appName)
+                    .replace(/{{background}}/g, payload.color)
+                    .replace(/{{themeColor}}/g, payload.themeColor)
+                    .replace(/{{output}}/g, setUrlPrefix(payload))
                     .replace(/{{width}}/g, (_a = icon.width) === null || _a === void 0 ? void 0 : _a.toString())
                     .replace(/{{orientation}}/g, icon.orientation)
                     .replace(/{{devicePixelRatio}}/g, (_b = icon.devicePxRatio) === null || _b === void 0 ? void 0 : _b.toString())
@@ -77,6 +77,6 @@ exports.buildHtml = (settings) => __awaiter(void 0, void 0, void 0, function* ()
         });
     });
     let metaData = [...new Set(lines)];
-    return Object.assign(Object.assign({}, settings), { html: metaData });
+    return Object.assign(Object.assign({}, payload), { html: metaData });
 });
 //# sourceMappingURL=html.js.map

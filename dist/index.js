@@ -33,31 +33,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const log = __importStar(require("cli-block"));
 // Functionality
 const settings_1 = require("./settings");
-const aggregate_1 = require("./aggregate");
 const generate_1 = require("./generate");
-const buildIt = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    return settings;
-});
-const doIconator = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    const iconData = yield buildIt(settings)
-        .then(aggregate_1.getPackage)
+const PackageJson = require("../package.json");
+const buildIt = (payload) => __awaiter(void 0, void 0, void 0, function* () { return payload; });
+const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const iconData = yield buildIt(payload)
         .then((s) => {
-        if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-            log.START("Iconator");
-            log.BLOCK_START();
-        }
-        !s.logging.includes("inline") &&
-            !s.logging.includes("silent") &&
-            !s.logging.includes("minimal") &&
-            log.BLOCK_LINE(`Iconator ${s.package.version} is generating your icons.`);
+        if (!s.logging.includes("silent") && !s.logging.includes("inline"))
+            log.BLOCK_START(`Iconator ${PackageJson.version} `);
         return s;
     })
         .then((s) => __awaiter(void 0, void 0, void 0, function* () {
         if (!s.logging.includes("silent") && !s.logging.includes("minimal")) {
-            if (!s.logging.includes("inline"))
-                log.BLOCK_MID("Settings");
-            else
-                log.BLOCK_MID(`Iconator   ${s.package.version} Settings`);
             const filteredSettings = {};
             Object.keys(s).forEach((key) => s[key] !== settings_1.defaultSettings[key]
                 ? (filteredSettings[key] = s[key])

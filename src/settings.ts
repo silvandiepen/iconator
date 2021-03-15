@@ -1,5 +1,5 @@
 import yargs from "yargs";
-import { Settings } from "./types";
+import { Payload } from "./types";
 
 export const defaultSettings = {
   input: "assets/favicon.png",
@@ -19,7 +19,7 @@ export const defaultSettings = {
   url: "",
 };
 
-export const settings = (): Settings => {
+export const settings = (): Payload => {
   const cs = (yargs as any).options({
     input: {
       required: false,

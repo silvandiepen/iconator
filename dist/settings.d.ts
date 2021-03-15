@@ -1,4 +1,4 @@
-import { Settings } from "./types";
+import { Payload } from "./types";
 export declare const defaultSettings: {
     input: string;
     output: string;
@@ -16,4 +16,4 @@ export declare const defaultSettings: {
     appDescription: string;
     url: string;
 };
-export declare const settings: () => Settings;
+export declare const settings: () => Payload;

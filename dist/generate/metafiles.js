@@ -39,39 +39,43 @@ const _1 = require("./");
 const xml_js_1 = require("xml-js");
 const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
-exports.buildMetaFiles = (settings) => __awaiter(void 0, void 0, void 0, function* () {
-    if (settings.meta && settings.meta.length == 1 && settings.meta[0] == "none")
-        return;
-    if (!settings.logging.includes("silent") &&
-        !settings.logging.includes("minimal")) {
+exports.buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const ignoreMeta = payload.meta && payload.meta.length == 1 && payload.meta[0] == "none";
+    if (ignoreMeta || payload.cached)
+        return payload;
+    if (!payload.logging.includes("silent") &&
+        !payload.logging.includes("minimal")) {
         log.BLOCK_LINE();
         log.BLOCK_LINE("Meta files".toUpperCase());
     }
-    else if (!settings.logging.includes("silent")) {
+    else if (!payload.logging.includes("silent")) {
         log.BLOCK_LINE_SUCCESS("Meta files");
     }
     yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!settings.meta || settings.meta.includes(category)) {
+        if (!payload.meta || payload.meta.includes(category)) {
             yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
                 const tempFileData = JSON.stringify(files_json_1.default[category][filename])
-                    .replace(/{{color}}/g, settings.color)
-                    .replace(/{{themeColor}}/g, settings.themeColor)
-                    .replace(/{{appName}}/g, settings.appName)
-                    .replace(/{{appDescription}}/g, settings.appDescription)
-                    .replace(/{{appDeveloper}}/g, settings.appDeveloper)
-                    .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
-                const filePath = path_1.join(settings.output, filename);
+                    .replace(/{{color}}/g, payload.color)
+                    .replace(/{{themeColor}}/g, payload.themeColor)
+                    .replace(/{{appName}}/g, payload.appName)
+                    .replace(/{{appDescription}}/g, payload.appDescription)
+                    .replace(/{{appDeveloper}}/g, payload.appDeveloper)
+                    .replace(/{{appDeveloperUrl}}/g, payload.appDeveloperUrl);
+                const filePath = path_1.join(payload.output, filename);
                 yield _1.createFolder(path_1.dirname(filePath));
-                yield writeFile(filePath, filePath.includes(".xml")
+                const fileContent = filePath.includes(".xml")
                     ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
-                    : tempFileData).then(() => {
-                    !settings.logging.includes("silent") &&
-                        !settings.logging.includes("minimal") &&
+                    : tempFileData;
+                const cacheFilePath = path_1.join(process.cwd(), ".cache/iconator", filename);
+                yield writeFile(filePath, fileContent).then(() => {
+                    !payload.logging.includes("silent") &&
+                        !payload.logging.includes("minimal") &&
                         log.BLOCK_LINE_SUCCESS(filename);
                 });
+                yield writeFile(cacheFilePath, fileContent);
             }));
         }
     }));
-    return settings;
+    return payload;
 });
 //# sourceMappingURL=metafiles.js.map

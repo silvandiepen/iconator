@@ -1,2 +1,2 @@
-import { Settings } from "../types";
-export declare const buildMetaFiles: (settings: Settings) => Promise<Settings>;
+import { Payload } from "../types";
+export declare const buildMetaFiles: (payload: Payload) => Promise<Payload>;

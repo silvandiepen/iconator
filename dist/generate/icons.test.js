@@ -8,10 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const icons_1 = require("./icons");
 const __mock__1 = require("../__mock__");
 const { readdir, stat } = require("fs").promises;
+const rimraf_1 = __importDefault(require("rimraf"));
+beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+    rimraf_1.default.sync(".cache");
+}));
 describe("Icons", () => {
     it("Create a folder", () => __awaiter(void 0, void 0, void 0, function* () {
         const testPath = '../../temp/do"';
@@ -30,9 +37,14 @@ describe("Icons", () => {
             expect(e.code).toEqual("ENOENT");
         }
     }));
+    it("Loads the source image", () => __awaiter(void 0, void 0, void 0, function* () {
+        const image = yield icons_1.loadSourceImage(__mock__1.settings);
+        expect(image).toBeTruthy();
+    }));
     it("Build One Icon", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield icons_1.buildIcon({
+            const image = yield icons_1.loadSourceImage(__mock__1.settings);
+            yield icons_1.processIcon(image, {
                 name: "test.jpg",
                 width: 100,
                 height: 100,

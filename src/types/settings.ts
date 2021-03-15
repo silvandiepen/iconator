@@ -14,7 +14,7 @@ interface OutputSettings {
   url?: string;
 }
 
-export interface Settings extends OutputSettings {
+export interface Payload extends OutputSettings {
   package?: any;
   debug?: boolean;
   icons?: Icon[];
@@ -22,9 +22,10 @@ export interface Settings extends OutputSettings {
   logging?: string[];
   sets?: string[];
   meta?: string[];
+  cached?: boolean;
 }
 export interface Output {
   icons: Icon[];
   html: string[];
-  settings: Settings;
+  settings: Payload;
 }

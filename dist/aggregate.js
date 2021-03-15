@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPackage = void 0;
 const { readFile } = require("fs").promises;
 const path_1 = require("path");
-exports.getPackage = (settings) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getPackage = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let PackageData = yield readFile(path_1.join(__dirname, "../package.json")).then((res) => res.toString());
-        return Object.assign(Object.assign({}, settings), { package: JSON.parse(PackageData) });
+        return Object.assign(Object.assign({}, payload), { package: JSON.parse(PackageData) });
     }
     catch (err) {
-        return settings;
+        return payload;
     }
 });
 //# sourceMappingURL=aggregate.js.map

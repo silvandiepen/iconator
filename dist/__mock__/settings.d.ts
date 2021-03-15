@@ -1,2 +1,2 @@
-import { Settings } from "../types";
-export declare const settings: Settings;
+import { Payload } from "../types";
+export declare const settings: Payload;

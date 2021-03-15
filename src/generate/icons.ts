@@ -1,81 +1,94 @@
-import { Settings, Icon } from "../types";
+import { Payload, Icon } from "../types";
 import iconGroups from "../icons.json";
 import * as log from "cli-block";
 import { asyncForEach } from "../utils";
+import { isCached, createCacheFile, moveCachedIcons } from "../cache";
+
 import { join, dirname, extname } from "path";
 import pngToIco from "png-to-ico";
 import Jimp from "jimp";
 
 const { writeFile, mkdir } = require("fs").promises;
-
 export const createFolder = async (folder: string): Promise<void> => {
   await mkdir(folder, { recursive: true }, () => {
     return;
   });
 };
 
-export const buildIcon = async (
-  icon: Icon,
-  settings: Settings
-): Promise<void> => {
-  try {
-    await Jimp.read(settings.input)
-      .then(async (image) => {
-        icon.width && icon.height && image.scaleToFit(icon.width, icon.height);
-        icon.rotate && image.rotate(icon.rotate);
-        !icon.transparent && image.background(0xffffffff);
+export const processIcon = async (image, icon, payload): Promise<void> => {
+  const processImage = Object.assign(
+    Object.create(Object.getPrototypeOf(image)),
+    image
+  );
 
-        const filePath = join(settings.output, icon.name);
-        await createFolder(dirname(filePath));
+  icon.width && icon.height && processImage.scaleToFit(icon.width, icon.height);
+  icon.rotate && processImage.rotate(icon.rotate);
+  !icon.transparent && processImage.background(0xffffffff);
 
-        const buffer = await image.getBufferAsync(Jimp.MIME_PNG);
+  const filePath = join(payload.output, icon.name);
+  const cacheFilePath = join(process.cwd(), ".cache/iconator", icon.name);
 
-        if (extname(icon.name) === ".ico") {
-          const icoFile = await pngToIco(buffer);
-          await writeFile(filePath, icoFile);
-        } else {
-          await writeFile(filePath, buffer);
-        }
-      })
-      .catch((err) => {
-        throw Error(err);
-      });
-  } catch (err) {
-    throw Error(err);
+  await createFolder(dirname(filePath));
+  await createFolder(".cache/iconator");
+
+  const buffer = await processImage.getBufferAsync(Jimp.MIME_PNG);
+
+  if (extname(icon.name) === ".ico") {
+    const icoFile = await pngToIco(buffer);
+    await writeFile(filePath, icoFile);
+    await writeFile(cacheFilePath, icoFile);
+  } else {
+    await writeFile(filePath, buffer);
+    await writeFile(cacheFilePath, buffer);
   }
 };
 
-export const buildIcons = async (settings: Settings): Promise<Settings> => {
-  const isConfig = (value: string): boolean => settings.logging.includes(value);
+export const loadSourceImage = async (payload: Payload) => {
+  const sourceImage = await Jimp.read(payload.input);
+  return sourceImage;
+};
+
+export const buildIcons = async (payload: Payload): Promise<Payload> => {
+  const isConfig = (value: string): boolean => payload.logging.includes(value);
+  const fullLog = !isConfig("silent") && !isConfig("minimal");
+  const minLog = !isConfig("silent") && isConfig("minimal");
 
   !isConfig("silent") && log.BLOCK_MID("Generate Icons");
 
   const allIcons = [];
+  const sourceImage = await loadSourceImage(payload);
+  const iconIsCached = await isCached(sourceImage, payload);
 
-  await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-    if (!settings.sets || settings.sets.includes(groupName)) {
-      if (!isConfig("silent") && !isConfig("minimal")) {
-        log.BLOCK_LINE();
-        log.BLOCK_LINE(groupName.toUpperCase());
-      } else if (!isConfig("silent") && isConfig("minimal")) {
-        log.BLOCK_LINE_SUCCESS(groupName);
-      }
-
-      await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
-        allIcons.push(icon);
-
-        try {
-          await buildIcon(icon, settings).then(() => {
-            !isConfig("silent") &&
-              !isConfig("minimal") &&
-              log.BLOCK_LINE_SUCCESS(icon.name);
-          });
-        } catch (err) {
-          throw Error(err);
+  if (iconIsCached) {
+    await moveCachedIcons(payload);
+    log.BLOCK_LINE_SUCCESS("Copied all icons from cache");
+  } else {
+    createCacheFile(payload, sourceImage);
+    await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
+      if (!payload.sets || payload.sets.includes(groupName)) {
+        if (fullLog) {
+          log.BLOCK_LINE();
+          log.BLOCK_LINE(groupName.toUpperCase());
+        } else if (minLog) {
+          log.BLOCK_LINE_SUCCESS(groupName);
         }
-      });
-    }
-  });
 
-  return { ...settings, icons: allIcons };
+        // Push all icons into the allIcons for later reference
+        for (let i = 0; i < iconGroups[groupName].length; i++) {
+          allIcons.push(iconGroups[groupName][i]);
+        }
+
+        await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
+          try {
+            await processIcon(sourceImage, icon, payload).then(() => {
+              fullLog && log.BLOCK_LINE_SUCCESS(icon.name);
+            });
+          } catch (err) {
+            throw Error(err);
+          }
+        });
+      }
+    });
+  }
+  return { ...payload, icons: allIcons, cached: iconIsCached };
 };

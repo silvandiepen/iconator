@@ -1,4 +1,4 @@
-import { Settings } from "../types";
+import { Payload } from "../types";
 import fileData from "../files.json";
 import { asyncForEach } from "cli-block";
 import { join, dirname } from "path";
@@ -8,49 +8,57 @@ import * as log from "cli-block";
 
 const { writeFile } = require("fs").promises;
 
-export const buildMetaFiles = async (settings: Settings): Promise<Settings> => {
-  if (settings.meta && settings.meta.length == 1 && settings.meta[0] == "none")
-    return;
+export const buildMetaFiles = async (payload: Payload): Promise<Payload> => {
+  const ignoreMeta =
+    payload.meta && payload.meta.length == 1 && payload.meta[0] == "none";
+  if (ignoreMeta || payload.cached) return payload;
 
   if (
-    !settings.logging.includes("silent") &&
-    !settings.logging.includes("minimal")
+    !payload.logging.includes("silent") &&
+    !payload.logging.includes("minimal")
   ) {
     log.BLOCK_LINE();
     log.BLOCK_LINE("Meta files".toUpperCase());
-  } else if (!settings.logging.includes("silent")) {
+  } else if (!payload.logging.includes("silent")) {
     log.BLOCK_LINE_SUCCESS("Meta files");
   }
+
   await asyncForEach(Object.keys(fileData), async (category) => {
-    if (!settings.meta || settings.meta.includes(category)) {
+    if (!payload.meta || payload.meta.includes(category)) {
       await asyncForEach(
         Object.keys(fileData[category]),
         async (filename: string) => {
           const tempFileData = JSON.stringify(fileData[category][filename])
-            .replace(/{{color}}/g, settings.color)
-            .replace(/{{themeColor}}/g, settings.themeColor)
-            .replace(/{{appName}}/g, settings.appName)
-            .replace(/{{appDescription}}/g, settings.appDescription)
-            .replace(/{{appDeveloper}}/g, settings.appDeveloper)
-            .replace(/{{appDeveloperUrl}}/g, settings.appDeveloperUrl);
+            .replace(/{{color}}/g, payload.color)
+            .replace(/{{themeColor}}/g, payload.themeColor)
+            .replace(/{{appName}}/g, payload.appName)
+            .replace(/{{appDescription}}/g, payload.appDescription)
+            .replace(/{{appDeveloper}}/g, payload.appDeveloper)
+            .replace(/{{appDeveloperUrl}}/g, payload.appDeveloperUrl);
 
-          const filePath = join(settings.output, filename);
+          const filePath = join(payload.output, filename);
           await createFolder(dirname(filePath));
 
-          await writeFile(
-            filePath,
-            filePath.includes(".xml")
-              ? js2xml(fileData, { compact: true, spaces: 4 })
-              : tempFileData
-          ).then(() => {
-            !settings.logging.includes("silent") &&
-              !settings.logging.includes("minimal") &&
+          const fileContent = filePath.includes(".xml")
+            ? js2xml(fileData, { compact: true, spaces: 4 })
+            : tempFileData;
+
+          const cacheFilePath = join(
+            process.cwd(),
+            ".cache/iconator",
+            filename
+          );
+
+          await writeFile(filePath, fileContent).then(() => {
+            !payload.logging.includes("silent") &&
+              !payload.logging.includes("minimal") &&
               log.BLOCK_LINE_SUCCESS(filename);
           });
+          await writeFile(cacheFilePath, fileContent);
         }
       );
     }
   });
 
-  return settings;
+  return payload;
 };

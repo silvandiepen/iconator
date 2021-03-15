@@ -1,6 +1,16 @@
-import { createFolder, buildIcon, buildIcons } from "./icons";
+import {
+  createFolder,
+  buildIcons,
+  loadSourceImage,
+  processIcon,
+} from "./icons";
 import { settings } from "../__mock__";
 const { readdir, stat } = require("fs").promises;
+import rimraf from "rimraf";
+
+beforeEach(async () => {
+  rimraf.sync(".cache");
+});
 
 describe("Icons", () => {
   it("Create a folder", async () => {
@@ -22,9 +32,17 @@ describe("Icons", () => {
     }
   });
 
+  it("Loads the source image", async () => {
+    const image = await loadSourceImage(settings);
+    expect(image).toBeTruthy();
+  });
+
   it("Build One Icon", async () => {
     try {
-      await buildIcon(
+      const image = await loadSourceImage(settings);
+
+      await processIcon(
+        image,
         {
           name: "test.jpg",
           width: 100,

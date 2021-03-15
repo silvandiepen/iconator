@@ -13,13 +13,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Iconator = require("../").default;
 const path_1 = require("path");
 const testRun = () => __awaiter(void 0, void 0, void 0, function* () {
-    //   await Iconator({
-    //     input: join(__dirname, "../../src/test/test.png"),
-    //   });
+    let startTime = new Date();
     yield Iconator({
         input: path_1.join(__dirname, "../../src/test/test.png"),
-        sets: ["appleIcon"],
+        output: "temp",
     });
+    let endTime = new Date();
+    return endTime.getTime() - startTime.getTime();
+    //   await Iconator({
+    //     input: join(__dirname, "../../src/test/test.png"),
+    //     sets: ["appleIcon"],
+    //   });
 });
-testRun();
+const testRuns = () => __awaiter(void 0, void 0, void 0, function* () {
+    const times = [
+        yield testRun(),
+        yield testRun(),
+        yield testRun(),
+        yield testRun(),
+        yield testRun(),
+        yield testRun(),
+        yield testRun(),
+    ];
+    const sum = times.reduce((a, b) => a + b, 0);
+    const avg = sum / times.length || 0;
+    const pretty = (time) => Math.round(time / 10) / 100;
+    console.log(times.map((time) => (time = pretty(time))));
+    console.log(pretty(avg));
+});
+testRuns();
 //# sourceMappingURL=functional.js.map

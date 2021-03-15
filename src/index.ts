@@ -7,33 +7,21 @@ import * as log from "cli-block";
 import { settings, defaultSettings } from "./settings";
 import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
-import { Settings, Output } from "./types";
+import { Payload, Output } from "./types";
 
-const buildIt = async (settings: Settings): Promise<Settings> => {
-  return settings;
-};
-const doIconator = async (settings: Settings): Promise<Output> => {
-  const iconData = await buildIt(settings)
-    .then(getPackage)
+const PackageJson = require("../package.json");
+
+const buildIt = async (payload: Payload): Promise<Payload> => payload;
+
+const doIconator = async (payload: Payload): Promise<Output> => {
+  const iconData = await buildIt(payload)
     .then((s) => {
-      if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-        log.START("Iconator");
-        log.BLOCK_START();
-      }
-
-      !s.logging.includes("inline") &&
-        !s.logging.includes("silent") &&
-        !s.logging.includes("minimal") &&
-        log.BLOCK_LINE(
-          `Iconator ${s.package.version} is generating your icons.`
-        );
+      if (!s.logging.includes("silent") && !s.logging.includes("inline"))
+        log.BLOCK_START(`Iconator ${PackageJson.version} `);
       return s;
     })
     .then(async (s) => {
       if (!s.logging.includes("silent") && !s.logging.includes("minimal")) {
-        if (!s.logging.includes("inline")) log.BLOCK_MID("Settings");
-        else log.BLOCK_MID(`Iconator   ${s.package.version} Settings`);
-
         const filteredSettings = {};
         Object.keys(s).forEach((key) =>
           s[key] !== defaultSettings[key]
@@ -83,7 +71,7 @@ const doIconator = async (settings: Settings): Promise<Output> => {
   return iconData;
 };
 
-const buildIconator = async (config: Settings = settings()) => {
+const buildIconator = async (config: Payload = settings()) => {
   const mergedSettings = Object.assign(settings(), config);
   const result = await doIconator(mergedSettings);
   return result;

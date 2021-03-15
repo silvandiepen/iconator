@@ -1,59 +1,64 @@
 {
-	"name": "iconator",
-	"version": "0.1.24",
-	"description": "Generate Favicons and other icons",
-	"main": "dist/index.js",
-	"bin": {
-		"iconator": "dist/cli.js"
-	},
-	"scripts": {
-		"build": "tsc",
-		"dev": "tsc -w",
-		"build:icons:cli": "npm run build && node dist/cli.js --input=src/test/test.png",
-		"build:icons:function": "npm run build && node dist/test/functional.js",
-		"test": "npm run build:icons:cli && npm run build:icons:function && npm run test:unit",
-		"test:unit": "jest --verbose",
-		"pretest:unit": "node dist/test/clean.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+ssh://git@github.com/silvandiepen/iconator.git"
-	},
-	"keywords": [
-		"icon",
-		"favicon",
-		"generate"
-	],
-	"author": "Sil van Diepen",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/silvandiepen/iconator/issues"
-	},
-	"homepage": "https://github.com/silvandiepen/iconator#readme",
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm run build && npm run test"
-		}
-	},
-	"devDependencies": {
-		"@babel/core": "^7.8.4",
-		"@babel/preset-env": "^7.8.4",
-		"@babel/register": "^7.8.3",
-		"@types/jest": "^26.0.3",
-		"@types/rimraf": "^3.0.0",
-		"@types/sharp": "^0.25.0",
-		"husky": "^4.2.5",
-		"jest": "^26.1.0",
-		"ts-jest": "^26.1.1",
-		"ts-lint": "^4.5.1",
-		"typescript": "^3.9.5"
-	},
-	"dependencies": {
-		"cli-block": "^1.1.7",
-		"jimp": "^0.14.0",
-		"png-to-ico": "^2.1.0",
-		"rimraf": "^3.0.2",
-		"xml-js": "^1.6.11",
-		"yargs": "^15.3.1"
-	}
+  "name": "iconator",
+  "version": "0.1.24",
+  "description": "Generate Favicons and other icons",
+  "main": "dist/index.js",
+  "bin": {
+    "iconator": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "build:icons:cli": "npm run build && node dist/cli.js --input=src/test/test.png",
+    "build:icons:function": "npm run build && node dist/test/functional.js",
+    "test:function": "node dist/test/functional.js",
+    "test": "npm run build:icons:cli && npm run build:icons:function && npm run test:unit",
+    "test:unit": "jest --verbose",
+    "pretest:unit": "node dist/test/clean.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/silvandiepen/iconator.git"
+  },
+  "keywords": [
+    "icon",
+    "favicon",
+    "generate"
+  ],
+  "author": "Sil van Diepen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silvandiepen/iconator/issues"
+  },
+  "homepage": "https://github.com/silvandiepen/iconator#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && npm run test"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@types/jest": "^26.0.3",
+    "@types/rimraf": "^3.0.0",
+    "@types/sharp": "^0.25.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "ts-jest": "^26.1.1",
+    "ts-lint": "^4.5.1",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "cli-block": "^1.1.7",
+    "image-hash": "^4.0.1",
+    "imghash": "^0.0.8",
+    "jimp": "^0.14.0",
+    "ncp": "^2.0.0",
+    "png-js": "^1.0.0",
+    "png-to-ico": "^2.1.0",
+    "rimraf": "^3.0.2",
+    "xml-js": "^1.6.11",
+    "yargs": "^15.3.1"
+  }
 }

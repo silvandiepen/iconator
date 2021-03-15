@@ -2,3 +2,5 @@ node_modules
 img
 temp
 .DS_Store
+.cache
+dist

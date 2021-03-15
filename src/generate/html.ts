@@ -1,8 +1,7 @@
-import { Settings, Icon } from "../types";
+import { Payload, Icon } from "../types";
 import iconData from "../icons.json";
-import { join } from "path";
 
-export const buildHtml = async (settings: Settings): Promise<Settings> => {
+export const buildHtml = async (payload: Payload): Promise<Payload> => {
   const html = {
     android: [
       `<link rel="manifest" href="{{output}}manifest.json">`,
@@ -41,21 +40,21 @@ export const buildHtml = async (settings: Settings): Promise<Settings> => {
       iconData[category].forEach((icon: Icon) => {
         if (line.indexOf("{{width}}") && !icon.width) return;
 
-        const setUrlPrefix = (settings: Settings): string => {
-          const prefix = settings.destination
-            ? settings.destination
-            : settings.output;
-          return settings.url
-            ? settings.url + "/" + prefix + "/"
+        const setUrlPrefix = (payload: Payload): string => {
+          const prefix = payload.destination
+            ? payload.destination
+            : payload.output;
+          return payload.url
+            ? payload.url + "/" + prefix + "/"
             : "/" + prefix + "/";
         };
 
         let newLine = line
-          .replace(/{{appleStatusBarStyle}}/, settings.appleStatusBarStyle)
-          .replace(/{{appName}}/g, settings.appName)
-          .replace(/{{background}}/g, settings.color)
-          .replace(/{{themeColor}}/g, settings.themeColor)
-          .replace(/{{output}}/g, setUrlPrefix(settings))
+          .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
+          .replace(/{{appName}}/g, payload.appName)
+          .replace(/{{background}}/g, payload.color)
+          .replace(/{{themeColor}}/g, payload.themeColor)
+          .replace(/{{output}}/g, setUrlPrefix(payload))
           .replace(/{{width}}/g, icon.width?.toString())
           .replace(/{{orientation}}/g, icon.orientation)
           .replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())
@@ -67,5 +66,5 @@ export const buildHtml = async (settings: Settings): Promise<Settings> => {
   });
   let metaData = [...new Set(lines)];
 
-  return { ...settings, html: metaData };
+  return { ...payload, html: metaData };
 };

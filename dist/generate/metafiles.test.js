@@ -13,7 +13,7 @@ const metafiles_1 = require("./metafiles");
 const __mock__1 = require("../__mock__");
 const { readdir } = require("fs").promises;
 describe("Metafiles", () => {
-    it("Create MetaFiles", () => __awaiter(void 0, void 0, void 0, function* () {
+    xit("Create MetaFiles", () => __awaiter(void 0, void 0, void 0, function* () {
         const testPath = 'temp/test/test/test"';
         let newSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: testPath });
         yield metafiles_1.buildMetaFiles(newSettings);
