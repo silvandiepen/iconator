@@ -16,7 +16,7 @@ describe("Metafiles", () => {
     xit("Create MetaFiles", () => __awaiter(void 0, void 0, void 0, function* () {
         const testPath = 'temp/test/test/test"';
         let newSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: testPath });
-        yield metafiles_1.buildMetaFiles(newSettings);
+        yield (0, metafiles_1.buildMetaFiles)(newSettings);
         const testDir = yield readdir(testPath, (r) => r);
         // Assert
         expect(testDir.length).toEqual(4);

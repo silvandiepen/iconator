@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildHtml = void 0;
 const icons_json_1 = __importDefault(require("../icons.json"));
-exports.buildHtml = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const buildHtml = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const html = {
         android: [
             `<link rel="manifest" href="{{output}}manifest.json">`,
@@ -79,4 +79,5 @@ exports.buildHtml = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     let metaData = [...new Set(lines)];
     return Object.assign(Object.assign({}, payload), { html: metaData });
 });
+exports.buildHtml = buildHtml;
 //# sourceMappingURL=html.js.map

@@ -22,7 +22,7 @@ beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
 describe("Icons", () => {
     it("Create a folder", () => __awaiter(void 0, void 0, void 0, function* () {
         const testPath = '../../temp/do"';
-        yield icons_1.createFolder(testPath);
+        yield (0, icons_1.createFolder)(testPath);
         const testDir = yield readdir(testPath, (r) => r);
         // Assert
         expect(testDir).toBeTruthy();
@@ -30,7 +30,7 @@ describe("Icons", () => {
     it("Don't create a folder", () => __awaiter(void 0, void 0, void 0, function* () {
         const testPath = '../../temp/dont"';
         try {
-            yield icons_1.createFolder(testPath);
+            yield (0, icons_1.createFolder)(testPath);
             yield readdir(testPath + "/test", (r) => r);
         }
         catch (e) {
@@ -38,13 +38,13 @@ describe("Icons", () => {
         }
     }));
     it("Loads the source image", () => __awaiter(void 0, void 0, void 0, function* () {
-        const image = yield icons_1.loadSourceImage(__mock__1.settings);
+        const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings);
         expect(image).toBeTruthy();
     }));
     it("Build One Icon", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const image = yield icons_1.loadSourceImage(__mock__1.settings);
-            yield icons_1.processIcon(image, {
+            const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings);
+            yield (0, icons_1.processIcon)(image, {
                 name: "test.jpg",
                 width: 100,
                 height: 100,
@@ -64,7 +64,7 @@ describe("Icons", () => {
         expect(outputFile.size).toBeGreaterThan(1);
     }));
     xit("Build Icons", () => __awaiter(void 0, void 0, void 0, function* () {
-        yield icons_1.buildIcons(__mock__1.settings);
+        yield (0, icons_1.buildIcons)(__mock__1.settings);
         const outputDir = yield readdir(__mock__1.settings.output);
         expect(outputDir.length).toEqual(59);
     }));

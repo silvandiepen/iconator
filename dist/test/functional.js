@@ -15,7 +15,7 @@ const path_1 = require("path");
 const testRun = () => __awaiter(void 0, void 0, void 0, function* () {
     let startTime = new Date();
     yield Iconator({
-        input: path_1.join(__dirname, "../../src/test/test.png"),
+        input: (0, path_1.join)(__dirname, "../../src/test/test.png"),
         output: "temp",
     });
     let endTime = new Date();

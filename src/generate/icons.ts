@@ -1,8 +1,8 @@
 import { Payload, Icon } from "../types";
 import iconGroups from "../icons.json";
-import * as log from "cli-block";
+import { blockLine, blockMid, blockLineSuccess } from "cli-block";
 import { asyncForEach } from "../utils";
-import { isCached, createCacheFile, moveCachedIcons } from "../cache";
+// import { isCached, createCacheFile, moveCachedIcons } from "../cache";
 
 import { join, dirname, extname } from "path";
 import pngToIco from "png-to-ico";
@@ -53,42 +53,46 @@ export const buildIcons = async (payload: Payload): Promise<Payload> => {
   const fullLog = !isConfig("silent") && !isConfig("minimal");
   const minLog = !isConfig("silent") && isConfig("minimal");
 
-  !isConfig("silent") && log.BLOCK_MID("Generate Icons");
+  !isConfig("silent") && blockMid("Generate Icons");
 
   const allIcons = [];
   const sourceImage = await loadSourceImage(payload);
-  const iconIsCached = await isCached(sourceImage, payload);
+  // const iconIsCached = await isCached(sourceImage, payload);
 
-  if (iconIsCached) {
-    await moveCachedIcons(payload);
-    log.BLOCK_LINE_SUCCESS("Copied all icons from cache");
-  } else {
-    createCacheFile(payload, sourceImage);
-    await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
-      if (!payload.sets || payload.sets.includes(groupName)) {
-        if (fullLog) {
-          log.BLOCK_LINE();
-          log.BLOCK_LINE(groupName.toUpperCase());
-        } else if (minLog) {
-          log.BLOCK_LINE_SUCCESS(groupName);
-        }
-
-        // Push all icons into the allIcons for later reference
-        for (let i = 0; i < iconGroups[groupName].length; i++) {
-          allIcons.push(iconGroups[groupName][i]);
-        }
-
-        await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
-          try {
-            await processIcon(sourceImage, icon, payload).then(() => {
-              fullLog && log.BLOCK_LINE_SUCCESS(icon.name);
-            });
-          } catch (err) {
-            throw Error(err);
-          }
-        });
+  // if (iconIsCached) {
+  //   await moveCachedIcons(payload);
+  //   log.BLOCK_LINE_SUCCESS("Copied all icons from cache");
+  // } else {
+  // createCacheFile(payload, sourceImage);
+  await asyncForEach(Object.keys(iconGroups), async (groupName: string) => {
+    if (!payload.sets || payload.sets.includes(groupName)) {
+      if (fullLog) {
+        blockLine();
+        blockLine(groupName.toUpperCase());
+      } else if (minLog) {
+        blockLineSuccess(groupName);
       }
-    });
-  }
-  return { ...payload, icons: allIcons, cached: iconIsCached };
+
+      // Push all icons into the allIcons for later reference
+      for (let i = 0; i < iconGroups[groupName].length; i++) {
+        allIcons.push(iconGroups[groupName][i]);
+      }
+
+      await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
+        try {
+          await processIcon(sourceImage, icon, payload).then(() => {
+            fullLog && blockLineSuccess(icon.name);
+          });
+        } catch (err) {
+          throw Error(err);
+        }
+      });
+    }
+  });
+  // }
+  return {
+    ...payload,
+    icons: allIcons,
+    //cached: iconIsCached
+  };
 };

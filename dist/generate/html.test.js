@@ -13,25 +13,25 @@ const html_1 = require("./html");
 const __mock__1 = require("../__mock__");
 describe("Test HTML Creating", () => {
     it("Result is an array with the right length", () => __awaiter(void 0, void 0, void 0, function* () {
-        const { html } = yield html_1.buildHtml(__mock__1.settings).then((r) => r);
+        const { html } = yield (0, html_1.buildHtml)(__mock__1.settings).then((r) => r);
         // Assert
         expect(html.length).toBe(49);
     }));
     it("Result has a different output", () => __awaiter(void 0, void 0, void 0, function* () {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "" });
-        const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
+        const { html } = yield (0, html_1.buildHtml)(altSettings).then((r) => r);
         // Assert
         expect(html[0]).toEqual('<link rel="manifest" href="/test/manifest.json">');
     }));
     it("Result should have an alternative output dir", () => __awaiter(void 0, void 0, void 0, function* () {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "test-destination" });
-        const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
+        const { html } = yield (0, html_1.buildHtml)(altSettings).then((r) => r);
         // Assert
         expect(html[0]).toEqual('<link rel="manifest" href="/test-destination/manifest.json">');
     }));
     it("Test if the url is being added rightfully", () => __awaiter(void 0, void 0, void 0, function* () {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { url: "https://testdomain.com", output: "test" });
-        const { html } = yield html_1.buildHtml(altSettings).then((r) => r);
+        const { html } = yield (0, html_1.buildHtml)(altSettings).then((r) => r);
         // Assert
         expect(html[0]).toEqual('<link rel="manifest" href="https://testdomain.com/test/manifest.json">');
     }));

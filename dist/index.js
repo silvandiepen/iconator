@@ -1,24 +1,5 @@
 #!/usr/bin/env node
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -30,9 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // Filesystem
-const log = __importStar(require("cli-block"));
+const cli_block_1 = require("cli-block");
 // Functionality
 const settings_1 = require("./settings");
+// import { getPackage } from "./aggregate";
 const generate_1 = require("./generate");
 const PackageJson = require("../package.json");
 const buildIt = (payload) => __awaiter(void 0, void 0, void 0, function* () { return payload; });
@@ -40,7 +22,7 @@ const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const iconData = yield buildIt(payload)
         .then((s) => {
         if (!s.logging.includes("silent") && !s.logging.includes("inline"))
-            log.BLOCK_START(`Iconator ${PackageJson.version} `);
+            (0, cli_block_1.blockHeader)(`Iconator ${PackageJson.version} `);
         return s;
     })
         .then((s) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,15 +32,15 @@ const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
                 ? (filteredSettings[key] = s[key])
                 : false);
             if (s.logging.includes("debug"))
-                yield log.BLOCK_SETTINGS(s, {
+                yield (0, cli_block_1.blockSettings)(s, {}, {
                     exclude: ["package"],
                 });
             else if (s.logging.includes("inline"))
-                yield log.BLOCK_SETTINGS(s, {
+                yield (0, cli_block_1.blockSettings)(s, {}, {
                     exclude: ["package", "logging"],
                 });
             else
-                yield log.BLOCK_SETTINGS(filteredSettings, {
+                yield (0, cli_block_1.blockSettings)(filteredSettings, {}, {
                     exclude: ["package"],
                 });
         }
@@ -69,7 +51,7 @@ const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         .then(generate_1.buildHtml)
         .then((s) => {
         if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-            log.BLOCK_END("done!");
+            (0, cli_block_1.blockFooter)("done!");
         }
         return {
             settings: {
@@ -91,8 +73,8 @@ const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return iconData;
 });
-const buildIconator = (config = settings_1.settings()) => __awaiter(void 0, void 0, void 0, function* () {
-    const mergedSettings = Object.assign(settings_1.settings(), config);
+const buildIconator = (config = (0, settings_1.settings)()) => __awaiter(void 0, void 0, void 0, function* () {
+    const mergedSettings = Object.assign((0, settings_1.settings)(), config);
     const result = yield doIconator(mergedSettings);
     return result;
 });

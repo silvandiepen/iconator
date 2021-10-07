@@ -22,7 +22,7 @@ exports.defaultSettings = {
     appDescription: "",
     url: "",
 };
-exports.settings = () => {
+const settings = () => {
     const cs = yargs_1.default.options({
         input: {
             required: false,
@@ -122,4 +122,5 @@ exports.settings = () => {
         sets: cs.icons,
     };
 };
+exports.settings = settings;
 //# sourceMappingURL=settings.js.map

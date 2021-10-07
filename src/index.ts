@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 // Filesystem
-import * as log from "cli-block";
+import { blockSettings, blockFooter, blockHeader } from "cli-block";
 
 // Functionality
 import { settings, defaultSettings } from "./settings";
-import { getPackage } from "./aggregate";
+// import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
 import { Payload, Output } from "./types";
 
@@ -17,7 +17,7 @@ const doIconator = async (payload: Payload): Promise<Output> => {
   const iconData = await buildIt(payload)
     .then((s) => {
       if (!s.logging.includes("silent") && !s.logging.includes("inline"))
-        log.BLOCK_START(`Iconator ${PackageJson.version} `);
+        blockHeader(`Iconator ${PackageJson.version} `);
       return s;
     })
     .then(async (s) => {
@@ -29,17 +29,29 @@ const doIconator = async (payload: Payload): Promise<Output> => {
             : false
         );
         if (s.logging.includes("debug"))
-          await log.BLOCK_SETTINGS(s, {
-            exclude: ["package"],
-          });
+          await blockSettings(
+            s,
+            {},
+            {
+              exclude: ["package"],
+            }
+          );
         else if (s.logging.includes("inline"))
-          await log.BLOCK_SETTINGS(s, {
-            exclude: ["package", "logging"],
-          });
+          await blockSettings(
+            s,
+            {},
+            {
+              exclude: ["package", "logging"],
+            }
+          );
         else
-          await log.BLOCK_SETTINGS(filteredSettings, {
-            exclude: ["package"],
-          });
+          await blockSettings(
+            filteredSettings,
+            {},
+            {
+              exclude: ["package"],
+            }
+          );
       }
       return s;
     })
@@ -48,7 +60,7 @@ const doIconator = async (payload: Payload): Promise<Output> => {
     .then(buildHtml)
     .then((s) => {
       if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-        log.BLOCK_END("done!");
+        blockFooter("done!");
       }
       return {
         settings: {

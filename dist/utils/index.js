@@ -10,9 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.asyncForEach = void 0;
-exports.asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, function* () {
+const asyncForEach = (array, callback) => __awaiter(void 0, void 0, void 0, function* () {
     for (let index = 0; index < array.length; index++) {
         yield callback(array[index], index, array);
     }
 });
+exports.asyncForEach = asyncForEach;
 //# sourceMappingURL=index.js.map

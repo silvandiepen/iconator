@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cleanup = void 0;
 const rimraf_1 = __importDefault(require("rimraf"));
-exports.cleanup = (folder) => {
+const cleanup = (folder) => {
     rimraf_1.default.sync(folder);
 };
-exports.cleanup("../../temp");
+exports.cleanup = cleanup;
+(0, exports.cleanup)("../../temp");
 //# sourceMappingURL=clean.js.map

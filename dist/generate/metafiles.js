@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -39,7 +39,7 @@ const _1 = require("./");
 const xml_js_1 = require("xml-js");
 const log = __importStar(require("cli-block"));
 const { writeFile } = require("fs").promises;
-exports.buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const ignoreMeta = payload.meta && payload.meta.length == 1 && payload.meta[0] == "none";
     if (ignoreMeta || payload.cached)
         return payload;
@@ -51,9 +51,9 @@ exports.buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function
     else if (!payload.logging.includes("silent")) {
         log.BLOCK_LINE_SUCCESS("Meta files");
     }
-    yield cli_block_1.asyncForEach(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, cli_block_1.asyncForEach)(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         if (!payload.meta || payload.meta.includes(category)) {
-            yield cli_block_1.asyncForEach(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
+            yield (0, cli_block_1.asyncForEach)(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
                 const tempFileData = JSON.stringify(files_json_1.default[category][filename])
                     .replace(/{{color}}/g, payload.color)
                     .replace(/{{themeColor}}/g, payload.themeColor)
@@ -61,12 +61,12 @@ exports.buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function
                     .replace(/{{appDescription}}/g, payload.appDescription)
                     .replace(/{{appDeveloper}}/g, payload.appDeveloper)
                     .replace(/{{appDeveloperUrl}}/g, payload.appDeveloperUrl);
-                const filePath = path_1.join(payload.output, filename);
-                yield _1.createFolder(path_1.dirname(filePath));
+                const filePath = (0, path_1.join)(payload.output, filename);
+                yield (0, _1.createFolder)((0, path_1.dirname)(filePath));
                 const fileContent = filePath.includes(".xml")
-                    ? xml_js_1.js2xml(files_json_1.default, { compact: true, spaces: 4 })
+                    ? (0, xml_js_1.js2xml)(files_json_1.default, { compact: true, spaces: 4 })
                     : tempFileData;
-                const cacheFilePath = path_1.join(process.cwd(), ".cache/iconator", filename);
+                const cacheFilePath = (0, path_1.join)(process.cwd(), ".cache/iconator", filename);
                 yield writeFile(filePath, fileContent).then(() => {
                     !payload.logging.includes("silent") &&
                         !payload.logging.includes("minimal") &&
@@ -78,4 +78,5 @@ exports.buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function
     }));
     return payload;
 });
+exports.buildMetaFiles = buildMetaFiles;
 //# sourceMappingURL=metafiles.js.map
