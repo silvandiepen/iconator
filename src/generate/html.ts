@@ -1,5 +1,6 @@
+import { join } from "path";
 import { Payload, Icon } from "../types";
-import iconData from "../icons.json";
+import { getFileData } from "@sil/tools";
 
 export const buildHtml = async (payload: Payload): Promise<Payload> => {
   const html = {
@@ -34,9 +35,10 @@ export const buildHtml = async (payload: Payload): Promise<Payload> => {
       `<link rel="yandex-tableau-widget" href="{{output}}yandex-browser-manifest.json">`,
     ],
   };
-  const lines = [];
+  const lines: string[] = [];
   Object.keys(html).forEach((category) => {
     html[category].forEach((line: string) => {
+      const iconData = getFileData(join(__dirname, "src/icons.json"));
       iconData[category].forEach((icon: Icon) => {
         if (line.indexOf("{{width}}") && !icon.width) return;
 
@@ -49,16 +51,19 @@ export const buildHtml = async (payload: Payload): Promise<Payload> => {
             : "/" + prefix + "/";
         };
 
-        let newLine = line
-          .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
-          .replace(/{{appName}}/g, payload.appName)
-          .replace(/{{background}}/g, payload.color)
-          .replace(/{{themeColor}}/g, payload.themeColor)
+        let newLine: string = line
+          .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle || "")
+          .replace(/{{appName}}/g, payload.appName || "")
+          .replace(/{{background}}/g, payload.color || "")
+          .replace(/{{themeColor}}/g, payload.themeColor || "")
           .replace(/{{output}}/g, setUrlPrefix(payload))
-          .replace(/{{width}}/g, icon.width?.toString())
-          .replace(/{{orientation}}/g, icon.orientation)
-          .replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())
-          .replace(/{{height}}/g, icon.height?.toString());
+          .replace(/{{width}}/g, icon.width?.toString() || "")
+          .replace(/{{orientation}}/g, icon.orientation || "")
+          .replace(
+            /{{devicePixelRatio}}/g,
+            icon.devicePxRatio?.toString() || ""
+          )
+          .replace(/{{height}}/g, icon.height?.toString() || "");
 
         lines.push(newLine);
       });

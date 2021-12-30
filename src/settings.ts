@@ -6,7 +6,7 @@ export const defaultSettings = {
   output: "img/favicons",
   destination: "",
   debug: false,
-  logging: [],
+  logging: 3,
   sets: [],
   meta: [],
   color: "white",
@@ -93,7 +93,7 @@ export const settings = (): Payload => {
     },
     logging: {
       require: false,
-      type: "array",
+      type: "number",
       default: defaultSettings.logging,
     },
     url: {

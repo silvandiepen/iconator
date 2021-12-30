@@ -1,57 +1,43 @@
 #!/usr/bin/env node
-
-// Filesystem
+import { join } from "path";
 import { blockSettings, blockFooter, blockHeader } from "cli-block";
 
 // Functionality
 import { settings, defaultSettings } from "./settings";
-// import { getPackage } from "./aggregate";
 import { buildIcons, buildHtml, buildMetaFiles } from "./generate";
 import { Payload, Output } from "./types";
-
-const PackageJson = require("../package.json");
+import { hasLogs, level } from "./logging";
+import { getFileData } from "@sil/tools";
 
 const buildIt = async (payload: Payload): Promise<Payload> => payload;
 
 const doIconator = async (payload: Payload): Promise<Output> => {
+  const packageJson = (await getFileData(
+    join(__dirname, "src/package.json")
+  )) as any;
+
   const iconData = await buildIt(payload)
     .then((s) => {
-      if (!s.logging.includes("silent") && !s.logging.includes("inline"))
-        blockHeader(`Iconator ${PackageJson.version} `);
+      blockHeader(`Iconator ${packageJson.version} `, { ...level.verbose });
       return s;
     })
+
     .then(async (s) => {
-      if (!s.logging.includes("silent") && !s.logging.includes("minimal")) {
+      if (hasLogs) {
         const filteredSettings = {};
         Object.keys(s).forEach((key) =>
           s[key] !== defaultSettings[key]
             ? (filteredSettings[key] = s[key])
             : false
         );
-        if (s.logging.includes("debug"))
-          await blockSettings(
-            s,
-            {},
-            {
-              exclude: ["package"],
-            }
-          );
-        else if (s.logging.includes("inline"))
-          await blockSettings(
-            s,
-            {},
-            {
-              exclude: ["package", "logging"],
-            }
-          );
-        else
-          await blockSettings(
-            filteredSettings,
-            {},
-            {
-              exclude: ["package"],
-            }
-          );
+
+        await blockSettings(
+          s,
+          { ...level.verbose },
+          {
+            exclude: ["package", "logging"],
+          }
+        );
       }
       return s;
     })
@@ -59,9 +45,7 @@ const doIconator = async (payload: Payload): Promise<Output> => {
     .then(buildMetaFiles)
     .then(buildHtml)
     .then((s) => {
-      if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-        blockFooter("done!");
-      }
+      blockFooter("done!", { ...level.verbose });
       return {
         settings: {
           input: s.input,
@@ -80,6 +64,7 @@ const doIconator = async (payload: Payload): Promise<Output> => {
         html: s.html,
       };
     });
+
   return iconData;
 };
 

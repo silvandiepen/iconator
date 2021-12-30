@@ -5,5 +5,5 @@ export const settings: Payload = {
   ...defaultSettings,
   input: join(__dirname, "../test/test.png"),
   output: "temp/dist",
-  logging: ["silent"],
+  logging: 3,
 };

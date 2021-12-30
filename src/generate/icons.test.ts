@@ -1,21 +1,18 @@
-import {
-  createFolder,
-  buildIcons,
-  loadSourceImage,
-  processIcon,
-} from "./icons";
+import { createDir } from "@sil/tools";
+
+import { buildIcons, loadSourceImage, processIcon } from "./icons";
 import { settings } from "../__mock__";
 const { readdir, stat } = require("fs").promises;
-import rimraf from "rimraf";
+import { sync } from "rimraf";
 
 beforeEach(async () => {
-  rimraf.sync(".cache");
+  sync(".cache");
 });
 
 describe("Icons", () => {
   it("Create a folder", async () => {
     const testPath = '../../temp/do"';
-    await createFolder(testPath);
+    await createDir(testPath);
     const testDir = await readdir(testPath, (r) => r);
 
     // Assert
@@ -25,10 +22,10 @@ describe("Icons", () => {
   it("Don't create a folder", async () => {
     const testPath = '../../temp/dont"';
     try {
-      await createFolder(testPath);
+      await createDir(testPath);
       await readdir(testPath + "/test", (r) => r);
-    } catch (e) {
-      expect(e.code).toEqual("ENOENT");
+    } catch (e: any) {
+      expect(e.code || "").toEqual("ENOENT");
     }
   });
 

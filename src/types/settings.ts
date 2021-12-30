@@ -1,3 +1,4 @@
+import { LoggerLevel } from "cli-block";
 import { Icon } from "./config";
 
 interface OutputSettings {
@@ -19,13 +20,13 @@ export interface Payload extends OutputSettings {
   debug?: boolean;
   icons?: Icon[];
   html?: string[];
-  logging?: string[];
+  logging?: LoggerLevel;
   sets?: string[];
   meta?: string[];
   cached?: boolean;
 }
 export interface Output {
-  icons: Icon[];
-  html: string[];
+  icons: Icon[] | undefined;
+  html: string[] | undefined;
   settings: Payload;
 }
