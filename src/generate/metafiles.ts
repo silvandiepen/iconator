@@ -1,6 +1,6 @@
 import { Payload } from "../types";
 import fileData from "../files.json";
-import { asyncForEach } from "cli-block";
+import { asyncForEach } from "../utils";
 import { join, dirname } from "path";
 import { createFolder } from "./";
 import { js2xml } from "xml-js";

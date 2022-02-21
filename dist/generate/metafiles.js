@@ -33,7 +33,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildMetaFiles = void 0;
 const files_json_1 = __importDefault(require("../files.json"));
-const cli_block_1 = require("cli-block");
+const utils_1 = require("../utils");
 const path_1 = require("path");
 const _1 = require("./");
 const xml_js_1 = require("xml-js");
@@ -51,9 +51,9 @@ const buildMetaFiles = (payload) => __awaiter(void 0, void 0, void 0, function* 
     else if (!payload.logging.includes("silent")) {
         log.BLOCK_LINE_SUCCESS("Meta files");
     }
-    yield (0, cli_block_1.asyncForEach)(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, utils_1.asyncForEach)(Object.keys(files_json_1.default), (category) => __awaiter(void 0, void 0, void 0, function* () {
         if (!payload.meta || payload.meta.includes(category)) {
-            yield (0, cli_block_1.asyncForEach)(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
+            yield (0, utils_1.asyncForEach)(Object.keys(files_json_1.default[category]), (filename) => __awaiter(void 0, void 0, void 0, function* () {
                 const tempFileData = JSON.stringify(files_json_1.default[category][filename])
                     .replace(/{{color}}/g, payload.color)
                     .replace(/{{themeColor}}/g, payload.themeColor)
