@@ -16,6 +16,7 @@ exports.buildIcons = exports.loadSourceImage = exports.processIcon = exports.cre
 const icons_json_1 = __importDefault(require("../icons.json"));
 const cli_block_1 = require("cli-block");
 const utils_1 = require("../utils");
+const lodash_1 = require("lodash");
 // import { isCached, createCacheFile, moveCachedIcons } from "../cache";
 const path_1 = require("path");
 const png_to_ico_1 = __importDefault(require("png-to-ico"));
@@ -48,8 +49,8 @@ const processIcon = (image, icon, payload) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.processIcon = processIcon;
-const loadSourceImage = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const sourceImage = yield jimp_1.default.read(payload.input);
+const loadSourceImage = (input) => __awaiter(void 0, void 0, void 0, function* () {
+    const sourceImage = yield jimp_1.default.read(input);
     return sourceImage;
 });
 exports.loadSourceImage = loadSourceImage;
@@ -59,7 +60,6 @@ const buildIcons = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const minLog = !isConfig("silent") && isConfig("minimal");
     !isConfig("silent") && (0, cli_block_1.blockMid)("Generate Icons");
     const allIcons = [];
-    const sourceImage = yield (0, exports.loadSourceImage)(payload);
     // const iconIsCached = await isCached(sourceImage, payload);
     // if (iconIsCached) {
     //   await moveCachedIcons(payload);
@@ -79,9 +79,10 @@ const buildIcons = (payload) => __awaiter(void 0, void 0, void 0, function* () {
             for (let i = 0; i < icons_json_1.default[groupName].length; i++) {
                 allIcons.push(icons_json_1.default[groupName][i]);
             }
+            const sourceImage = yield (0, exports.loadSourceImage)(payload.input);
             yield (0, utils_1.asyncForEach)(icons_json_1.default[groupName], (icon) => __awaiter(void 0, void 0, void 0, function* () {
                 try {
-                    yield (0, exports.processIcon)(sourceImage, icon, payload).then(() => {
+                    yield (0, exports.processIcon)((0, lodash_1.cloneDeep)(sourceImage), icon, payload).then(() => {
                         fullLog && (0, cli_block_1.blockLineSuccess)(icon.name);
                     });
                 }

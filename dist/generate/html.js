@@ -50,30 +50,31 @@ const buildHtml = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const lines = [];
     Object.keys(html).forEach((category) => {
         html[category].forEach((line) => {
-            icons_json_1.default[category].forEach((icon) => {
-                var _a, _b, _c;
-                if (line.indexOf("{{width}}") && !icon.width)
-                    return;
-                const setUrlPrefix = (payload) => {
-                    const prefix = payload.destination
-                        ? payload.destination
-                        : payload.output;
-                    return payload.url
-                        ? payload.url + "/" + prefix + "/"
-                        : "/" + prefix + "/";
-                };
-                let newLine = line
-                    .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
-                    .replace(/{{appName}}/g, payload.appName)
-                    .replace(/{{background}}/g, payload.color)
-                    .replace(/{{themeColor}}/g, payload.themeColor)
-                    .replace(/{{output}}/g, setUrlPrefix(payload))
-                    .replace(/{{width}}/g, (_a = icon.width) === null || _a === void 0 ? void 0 : _a.toString())
-                    .replace(/{{orientation}}/g, icon.orientation)
-                    .replace(/{{devicePixelRatio}}/g, (_b = icon.devicePxRatio) === null || _b === void 0 ? void 0 : _b.toString())
-                    .replace(/{{height}}/g, (_c = icon.height) === null || _c === void 0 ? void 0 : _c.toString());
-                lines.push(newLine);
-            });
+            if (icons_json_1.default[category])
+                icons_json_1.default[category].forEach((icon) => {
+                    var _a, _b, _c;
+                    if (line.indexOf("{{width}}") && !icon.width)
+                        return;
+                    const setUrlPrefix = (payload) => {
+                        const prefix = payload.destination
+                            ? payload.destination
+                            : payload.output;
+                        return payload.url
+                            ? payload.url + "/" + prefix + "/"
+                            : "/" + prefix + "/";
+                    };
+                    let newLine = line
+                        .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
+                        .replace(/{{appName}}/g, payload.appName)
+                        .replace(/{{background}}/g, payload.color)
+                        .replace(/{{themeColor}}/g, payload.themeColor)
+                        .replace(/{{output}}/g, setUrlPrefix(payload))
+                        .replace(/{{width}}/g, (_a = icon.width) === null || _a === void 0 ? void 0 : _a.toString())
+                        .replace(/{{orientation}}/g, icon.orientation)
+                        .replace(/{{devicePixelRatio}}/g, (_b = icon.devicePxRatio) === null || _b === void 0 ? void 0 : _b.toString())
+                        .replace(/{{height}}/g, (_c = icon.height) === null || _c === void 0 ? void 0 : _c.toString());
+                    lines.push(newLine);
+                });
         });
     });
     let metaData = [...new Set(lines)];

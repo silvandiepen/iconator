@@ -18,6 +18,7 @@ const settings_1 = require("./settings");
 const generate_1 = require("./generate");
 const PackageJson = require("../package.json");
 const buildIt = (payload) => __awaiter(void 0, void 0, void 0, function* () { return payload; });
+let timer = Date.now();
 const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const iconData = yield buildIt(payload)
         .then((s) => {
@@ -50,8 +51,9 @@ const doIconator = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         .then(generate_1.buildMetaFiles)
         .then(generate_1.buildHtml)
         .then((s) => {
+        const diff = Date.now() - timer;
         if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-            (0, cli_block_1.blockFooter)("done!");
+            (0, cli_block_1.blockFooter)(`done in ${Math.round(diff / 100) / 10}s!`);
         }
         return {
             settings: {

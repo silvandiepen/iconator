@@ -35,33 +35,35 @@ export const buildHtml = async (payload: Payload): Promise<Payload> => {
     ],
   };
   const lines = [];
+
   Object.keys(html).forEach((category) => {
     html[category].forEach((line: string) => {
-      iconData[category].forEach((icon: Icon) => {
-        if (line.indexOf("{{width}}") && !icon.width) return;
+      if (iconData[category])
+        iconData[category].forEach((icon: Icon) => {
+          if (line.indexOf("{{width}}") && !icon.width) return;
 
-        const setUrlPrefix = (payload: Payload): string => {
-          const prefix = payload.destination
-            ? payload.destination
-            : payload.output;
-          return payload.url
-            ? payload.url + "/" + prefix + "/"
-            : "/" + prefix + "/";
-        };
+          const setUrlPrefix = (payload: Payload): string => {
+            const prefix = payload.destination
+              ? payload.destination
+              : payload.output;
+            return payload.url
+              ? payload.url + "/" + prefix + "/"
+              : "/" + prefix + "/";
+          };
 
-        let newLine = line
-          .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
-          .replace(/{{appName}}/g, payload.appName)
-          .replace(/{{background}}/g, payload.color)
-          .replace(/{{themeColor}}/g, payload.themeColor)
-          .replace(/{{output}}/g, setUrlPrefix(payload))
-          .replace(/{{width}}/g, icon.width?.toString())
-          .replace(/{{orientation}}/g, icon.orientation)
-          .replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())
-          .replace(/{{height}}/g, icon.height?.toString());
+          let newLine = line
+            .replace(/{{appleStatusBarStyle}}/, payload.appleStatusBarStyle)
+            .replace(/{{appName}}/g, payload.appName)
+            .replace(/{{background}}/g, payload.color)
+            .replace(/{{themeColor}}/g, payload.themeColor)
+            .replace(/{{output}}/g, setUrlPrefix(payload))
+            .replace(/{{width}}/g, icon.width?.toString())
+            .replace(/{{orientation}}/g, icon.orientation)
+            .replace(/{{devicePixelRatio}}/g, icon.devicePxRatio?.toString())
+            .replace(/{{height}}/g, icon.height?.toString());
 
-        lines.push(newLine);
-      });
+          lines.push(newLine);
+        });
     });
   });
   let metaData = [...new Set(lines)];

@@ -13,6 +13,8 @@ const PackageJson = require("../package.json");
 
 const buildIt = async (payload: Payload): Promise<Payload> => payload;
 
+let timer = Date.now();
+
 const doIconator = async (payload: Payload): Promise<Output> => {
   const iconData = await buildIt(payload)
     .then((s) => {
@@ -59,8 +61,10 @@ const doIconator = async (payload: Payload): Promise<Output> => {
     .then(buildMetaFiles)
     .then(buildHtml)
     .then((s) => {
+      const diff = Date.now() - timer;
+
       if (!s.logging.includes("silent") && !s.logging.includes("inline")) {
-        blockFooter("done!");
+        blockFooter(`done in ${Math.round(diff / 100) / 10}s!`);
       }
       return {
         settings: {

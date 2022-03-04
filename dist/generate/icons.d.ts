@@ -1,5 +1,7 @@
 import { Payload } from "../types";
 export declare const createFolder: (folder: string) => Promise<void>;
 export declare const processIcon: (image: any, icon: any, payload: any) => Promise<void>;
-export declare const loadSourceImage: (payload: Payload) => Promise<import("@jimp/core").Jimp & import("@jimp/jpeg").JpegClass & import("@jimp/png").PNGClass & import("@jimp/plugin-blit").Blit & import("@jimp/plugin-blur").Blur & import("@jimp/plugin-circle").Circle & import("@jimp/plugin-color").Color & import("@jimp/plugin-contain").Contain & import("@jimp/plugin-cover").Cover & import("@jimp/plugin-crop").CropClass & import("@jimp/plugin-displace").Displace & import("@jimp/plugin-dither").Dither & import("@jimp/plugin-fisheye").Fisheye & import("@jimp/plugin-flip").Flip & import("@jimp/plugin-gaussian").Gaussian & import("@jimp/plugin-invert").Invert & import("@jimp/plugin-mask").Mask & import("@jimp/plugin-normalize").Normalize & import("@jimp/plugin-print").PrintClass & import("@jimp/plugin-resize").ResizeClass & import("@jimp/plugin-rotate").Rotate & import("@jimp/plugin-scale").Scale & import("@jimp/plugin-shadow").Shadow & import("@jimp/plugin-threshold").Threshold>;
+declare type Image = any;
+export declare const loadSourceImage: (input: string) => Promise<Image>;
 export declare const buildIcons: (payload: Payload) => Promise<Payload>;
+export {};

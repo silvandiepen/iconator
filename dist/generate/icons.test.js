@@ -38,12 +38,12 @@ describe("Icons", () => {
         }
     }));
     it("Loads the source image", () => __awaiter(void 0, void 0, void 0, function* () {
-        const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings);
+        const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings.input);
         expect(image).toBeTruthy();
     }));
     it("Build One Icon", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings);
+            const image = yield (0, icons_1.loadSourceImage)(__mock__1.settings.input);
             yield (0, icons_1.processIcon)(image, {
                 name: "test.jpg",
                 width: 100,

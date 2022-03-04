@@ -33,13 +33,13 @@ describe("Icons", () => {
   });
 
   it("Loads the source image", async () => {
-    const image = await loadSourceImage(settings);
+    const image = await loadSourceImage(settings.input);
     expect(image).toBeTruthy();
   });
 
   it("Build One Icon", async () => {
     try {
-      const image = await loadSourceImage(settings);
+      const image = await loadSourceImage(settings.input);
 
       await processIcon(
         image,

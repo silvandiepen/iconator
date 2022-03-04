@@ -9,8 +9,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "build:icons:cli": "npm run build && node dist/cli.js --input=src/test/test.png",
-    "build:icons:function": "npm run build && node dist/test/functional.js",
+    "build:icons:cli": "rm -rf ./img && node dist/cli.js --input=src/test/test.png",
+    "build:icons:function": "node dist/test/functional.js",
     "test:function": "node dist/test/functional.js",
     "test": "npm run build:icons:cli && npm run build:icons:function && npm run test:unit",
     "test:unit": "jest --verbose",

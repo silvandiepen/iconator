@@ -2,6 +2,7 @@ import { Payload, Icon } from "../types";
 import iconGroups from "../icons.json";
 import { blockLine, blockMid, blockLineSuccess } from "cli-block";
 import { asyncForEach } from "../utils";
+import { cloneDeep } from "lodash";
 // import { isCached, createCacheFile, moveCachedIcons } from "../cache";
 
 import { join, dirname, extname } from "path";
@@ -43,8 +44,10 @@ export const processIcon = async (image, icon, payload): Promise<void> => {
   }
 };
 
-export const loadSourceImage = async (payload: Payload) => {
-  const sourceImage = await Jimp.read(payload.input);
+type Image = any;
+
+export const loadSourceImage = async (input: string): Promise<Image> => {
+  const sourceImage = await Jimp.read(input);
   return sourceImage;
 };
 
@@ -56,7 +59,6 @@ export const buildIcons = async (payload: Payload): Promise<Payload> => {
   !isConfig("silent") && blockMid("Generate Icons");
 
   const allIcons = [];
-  const sourceImage = await loadSourceImage(payload);
   // const iconIsCached = await isCached(sourceImage, payload);
 
   // if (iconIsCached) {
@@ -78,9 +80,11 @@ export const buildIcons = async (payload: Payload): Promise<Payload> => {
         allIcons.push(iconGroups[groupName][i]);
       }
 
+      const sourceImage = await loadSourceImage(payload.input);
+
       await asyncForEach(iconGroups[groupName], async (icon: Icon) => {
         try {
-          await processIcon(sourceImage, icon, payload).then(() => {
+          await processIcon(cloneDeep(sourceImage), icon, payload).then(() => {
             fullLog && blockLineSuccess(icon.name);
           });
         } catch (err) {

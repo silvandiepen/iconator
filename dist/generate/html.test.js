@@ -15,7 +15,7 @@ describe("Test HTML Creating", () => {
     it("Result is an array with the right length", () => __awaiter(void 0, void 0, void 0, function* () {
         const { html } = yield (0, html_1.buildHtml)(__mock__1.settings).then((r) => r);
         // Assert
-        expect(html.length).toBe(49);
+        expect(html.length).toBe(50);
     }));
     it("Result has a different output", () => __awaiter(void 0, void 0, void 0, function* () {
         const altSettings = Object.assign(Object.assign({}, __mock__1.settings), { output: "test", destination: "" });
